@@ -789,12 +789,12 @@ function SessionPanel({ lecturer, onLogout }) {
                                             <p className="text-xs text-slate-400">Students scanned in this active lecture ({attendees.length} present)</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 w-full sm:w-auto">
                                         <input type="text"
                                             placeholder="Search student or ID..."
                                             value={searchQuery}
                                             onChange={e => setSearchQuery(e.target.value)}
-                                            className="px-4 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500 w-48 sm:w-60" />
+                                            className="w-full sm:w-60 px-4 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white focus:outline-none focus:border-emerald-500" />
                                     </div>
                                 </div>
 
