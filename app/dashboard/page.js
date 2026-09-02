@@ -7,7 +7,6 @@ import { getDashboardData } from '../../lib/api';
 import AdminGuard from '../../components/AdminGuard';
 
 const PHOTO = (id) => `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost/face-attendance-api/api'}/get-student-photo.php?student_id=${id}`;
-const DEPT_COLORS = ['#2563eb', '#10b981', '#06b6d4', '#8b5cf6', '#3b82f6', '#059669', '#14b8a6'];
 const card = { background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(59, 130, 246, 0.25)', boxShadow: '0 10px 35px rgba(0,0,0,0.5)' };
 
 /* ── Circular progress ring ── */
@@ -43,6 +42,7 @@ export default function DashboardPage() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [now, setNow] = useState(new Date());
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => setNow(new Date()), 1000);
@@ -64,7 +64,6 @@ export default function DashboardPage() {
                     });
                 }
             } else if (data && data.students) {
-                // Compatible format fallback
                 setStudents(data.students || []);
                 setStats(data.statistics || null);
             } else {
@@ -89,7 +88,7 @@ export default function DashboardPage() {
 
     return (
         <AdminGuard title="Salvation Heritage Analytics & Management Dashboard">
-            <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+            <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-20 md:pb-0" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
                 <style>{`
                     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
                     @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
@@ -106,7 +105,7 @@ export default function DashboardPage() {
                 <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <span>🛡️</span>
-                        <span>Salvation Heritage Schools • Central Administrative Terminal</span>
+                        <span>Salvation Heritage Schools • Administrative Terminal</span>
                     </div>
                     <div className="text-emerald-400 font-bold text-[10px]">
                         Admin Authorization Active
@@ -116,7 +115,7 @@ export default function DashboardPage() {
                 {/* ── Navbar ── */}
                 <header className="sticky top-0 z-40 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 flex-shrink-0">
+                        <Link href="/" className="flex items-center gap-3 no-underline flex-shrink-0">
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
                                 SH
                             </div>
@@ -127,10 +126,11 @@ export default function DashboardPage() {
                                         Analytics
                                     </span>
                                 </div>
-                                <span className="hidden md:block text-slate-400 text-xs">Real-Time Attendance Analytics</span>
+                                <span className="hidden md:block text-slate-400 text-xs">Real-Time Attendance Records</span>
                             </div>
-                        </div>
+                        </Link>
 
+                        {/* Desktop Navbar (Faculty removed from admin navbar) */}
                         <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
                             <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
                                 Kiosk
@@ -141,15 +141,12 @@ export default function DashboardPage() {
                             <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
                                 Students
                             </Link>
-                            <Link href="/lecturer" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                                Faculty
-                            </Link>
                             <Link href="/register" className="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline">
                                 + Register
                             </Link>
                         </nav>
 
-                        <div className="flex items-center gap-3 flex-shrink-0">
+                        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                             <div className="hidden sm:block text-right">
                                 <p className="text-xs text-slate-400">{now.toLocaleDateString('en-MY', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
                                 <p className="text-sm font-mono font-bold text-emerald-400">{now.toLocaleTimeString()}</p>
@@ -158,12 +155,35 @@ export default function DashboardPage() {
                                 className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all">
                                 ↻ Refresh
                             </button>
+                            <button onClick={() => setMobileOpen(v => !v)}
+                                aria-label="Toggle mobile menu"
+                                className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:bg-slate-800 transition-colors">
+                                {mobileOpen ? '✕' : '☰'}
+                            </button>
                         </div>
                     </div>
+
+                    {/* Mobile Navigation Dropdown */}
+                    {mobileOpen && (
+                        <div className="md:hidden border-t border-slate-800 bg-slate-950 px-4 py-3 space-y-2">
+                            <Link href="/" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-900 no-underline">
+                                📸 Attendance Kiosk
+                            </Link>
+                            <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-blue-600 no-underline">
+                                📊 Admin Dashboard
+                            </Link>
+                            <Link href="/students" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-900 no-underline">
+                                👥 Student Directory
+                            </Link>
+                            <Link href="/register" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-emerald-400 hover:bg-slate-900 no-underline">
+                                📝 Register Student
+                            </Link>
+                        </div>
+                    )}
                 </header>
 
                 {/* ── Main Content ── */}
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+                <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1">
                     {/* ── Stats Grid ── */}
                     {stats && (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -323,6 +343,26 @@ export default function DashboardPage() {
                         )}
                     </div>
                 </main>
+
+                {/* Mobile Bottom Bar */}
+                <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 py-2 px-3 flex items-center justify-around shadow-2xl shadow-black">
+                    <Link href="/" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                        <span className="text-xl">📸</span>
+                        <span className="text-[10px] font-bold">Kiosk</span>
+                    </Link>
+                    <Link href="/register" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                        <span className="text-xl">📝</span>
+                        <span className="text-[10px] font-bold">Register</span>
+                    </Link>
+                    <Link href="/dashboard" className="flex flex-col items-center gap-1 py-1 px-3 text-emerald-400 font-black no-underline">
+                        <span className="text-xl">📊</span>
+                        <span className="text-[10px] font-bold">Admin</span>
+                    </Link>
+                    <Link href="/students" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                        <span className="text-xl">👥</span>
+                        <span className="text-[10px] font-bold">Students</span>
+                    </Link>
+                </div>
             </div>
         </AdminGuard>
     );

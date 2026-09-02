@@ -125,6 +125,7 @@ export default function StudentsPage() {
     const [filterSem, setFilterSem] = useState('all');
     const [view, setView] = useState('grid');
     const [deletingId, setDeletingId] = useState(null);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const loadStudents = useCallback(() => {
         setLoading(true);
@@ -139,36 +140,50 @@ export default function StudentsPage() {
     const handleDelete = useCallback(async (student) => {
         if (!confirm(`Delete ${student.full_name}? This will remove them from the database and face collection.`)) return;
         setDeletingId(student.student_id);
-        const result = await deleteStudent(student.student_id);
-        setDeletingId(null);
-        if (result.success) {
-            toast.success(`${student.full_name} deleted.`);
-            loadStudents();
-        } else {
-            toast.error(result.message || 'Failed to delete student.');
+        try {
+            const data = await deleteStudent(student.student_id);
+            if (data.success) {
+                toast.success(`${student.full_name} deleted.`);
+                setStudents(prev => prev.filter(s => s.student_id !== student.student_id));
+            } else {
+                toast.error(data.message || 'Failed to delete');
+            }
+        } catch {
+            toast.error('Network error');
+        } finally {
+            setDeletingId(null);
         }
-    }, [loadStudents]);
+    }, []);
 
-    const departments = useMemo(() => ['all', ...new Set(students.map(s => s.department).filter(Boolean))], [students]);
-    const semesters   = useMemo(() => ['all', ...new Set(students.map(s => s.semester).filter(Boolean)).values()].sort(), [students]);
+    // Filter & search
+    const filtered = useMemo(() => {
+        return students.filter(s => {
+            const q = search.toLowerCase();
+            const matchSearch = !q ||
+                s.full_name?.toLowerCase().includes(q) ||
+                s.student_id?.toLowerCase().includes(q) ||
+                s.department?.toLowerCase().includes(q);
+            const matchDept = filterDept === 'all' || s.department === filterDept;
+            const matchSem  = filterSem  === 'all' || String(s.semester) === String(filterSem);
+            return matchSearch && matchDept && matchSem;
+        });
+    }, [students, search, filterDept, filterSem]);
 
-    const filtered = useMemo(() => students.filter(s => {
-        const q = search.toLowerCase();
-        return (
-            (!q || s.full_name?.toLowerCase().includes(q) || s.student_id?.toLowerCase().includes(q)) &&
-            (filterDept === 'all' || s.department === filterDept) &&
-            (filterSem  === 'all' || String(s.semester) === String(filterSem))
-        );
-    }), [students, search, filterDept, filterSem]);
+    const departments = useMemo(() => {
+        const set = new Set(students.map(s => s.department).filter(Boolean));
+        return Array.from(set).sort();
+    }, [students]);
+
+    const semesters = useMemo(() => [1, 2, 3], []);
 
     return (
         <AdminGuard title="Salvation Heritage Student Directory">
-            <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+            <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-20 md:pb-0" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
                 <AOSInit />
                 <style>{`
-                    @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-                    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
-                    @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 25px rgba(37,99,235,0.3); } 50% { box-shadow: 0 0 50px rgba(16,185,129,0.5); } }
+                    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+                    @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+                    .animate-float { animation: float 8s ease-in-out infinite; }
                     select option { background-color: #0f172a !important; color: #fff !important; }
                     select { color-scheme: dark; }
                 `}</style>
@@ -180,7 +195,7 @@ export default function StudentsPage() {
                 {/* ── Top School Banner ── */}
                 <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <span>🏛️</span>
+                        <span>👥</span>
                         <span>Salvation Heritage Schools • Central Student Registry</span>
                     </div>
                     <div className="text-emerald-400 font-bold text-[10px]">
@@ -191,7 +206,7 @@ export default function StudentsPage() {
                 {/* ── Navbar ── */}
                 <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 flex-shrink-0">
+                        <Link href="/" className="flex items-center gap-3 no-underline flex-shrink-0">
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
                                 SH
                             </div>
@@ -204,8 +219,9 @@ export default function StudentsPage() {
                                 </div>
                                 <span className="hidden md:block text-slate-400 text-xs">Official Student Roster & Records</span>
                             </div>
-                        </div>
+                        </Link>
 
+                        {/* Desktop Navbar without Faculty */}
                         <div className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
                             <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
                                 Kiosk
@@ -216,20 +232,42 @@ export default function StudentsPage() {
                             <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
                                 Students
                             </Link>
-                            <Link href="/lecturer" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                                Faculty
-                            </Link>
                             <Link href="/register" className="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline">
                                 + Register
                             </Link>
                         </div>
 
-                        <Link href="/register"
-                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-lg shadow-blue-600/30 active:scale-95 transition-all no-underline flex-shrink-0">
-                            <span>+</span>
-                            <span className="hidden sm:inline">Add Student</span>
-                        </Link>
+                        <div className="flex items-center gap-2">
+                            <Link href="/register"
+                                className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-lg shadow-blue-600/30 active:scale-95 transition-all no-underline flex-shrink-0">
+                                <span>+</span>
+                                <span>Add Student</span>
+                            </Link>
+                            <button onClick={() => setMobileOpen(v => !v)}
+                                aria-label="Toggle mobile menu"
+                                className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:bg-slate-800 transition-colors">
+                                {mobileOpen ? '✕' : '☰'}
+                            </button>
+                        </div>
                     </div>
+
+                    {/* Mobile Navigation Dropdown */}
+                    {mobileOpen && (
+                        <div className="md:hidden border-t border-slate-800 bg-slate-950 px-4 py-3 space-y-2">
+                            <Link href="/" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-900 no-underline">
+                                📸 Attendance Kiosk
+                            </Link>
+                            <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-900 no-underline">
+                                📊 Admin Dashboard
+                            </Link>
+                            <Link href="/students" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-blue-600 no-underline">
+                                👥 Student Directory
+                            </Link>
+                            <Link href="/register" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-emerald-400 hover:bg-slate-900 no-underline">
+                                📝 Register Student
+                            </Link>
+                        </div>
+                    )}
                 </nav>
 
                 {/* ── Blue-Emerald School Hero Section ── */}
@@ -444,6 +482,26 @@ export default function StudentsPage() {
                         </Link>
                     </div>
                 </footer>
+
+                {/* Mobile Bottom Bar */}
+                <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 py-2 px-3 flex items-center justify-around shadow-2xl shadow-black">
+                    <Link href="/" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                        <span className="text-xl">📸</span>
+                        <span className="text-[10px] font-bold">Kiosk</span>
+                    </Link>
+                    <Link href="/register" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                        <span className="text-xl">📝</span>
+                        <span className="text-[10px] font-bold">Register</span>
+                    </Link>
+                    <Link href="/dashboard" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                        <span className="text-xl">📊</span>
+                        <span className="text-[10px] font-bold">Admin</span>
+                    </Link>
+                    <Link href="/students" className="flex flex-col items-center gap-1 py-1 px-3 text-cyan-400 font-black no-underline">
+                        <span className="text-xl">👥</span>
+                        <span className="text-[10px] font-bold">Students</span>
+                    </Link>
+                </div>
             </div>
         </AdminGuard>
     );

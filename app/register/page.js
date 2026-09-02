@@ -671,6 +671,26 @@ export default function RegisterPage() {
             {showDuplicateAlert && duplicateInfo && (
                 <DuplicateFaceAlert duplicateInfo={duplicateInfo} onClose={() => { setShowDuplicateAlert(false); setDuplicateInfo(null); }} />
             )}
+
+            {/* Mobile Bottom Bar */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 py-2 px-3 flex items-center justify-around shadow-2xl shadow-black">
+                <Link href="/" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">📸</span>
+                    <span className="text-[10px] font-bold">Kiosk</span>
+                </Link>
+                <Link href="/register" className="flex flex-col items-center gap-1 py-1 px-3 text-emerald-400 font-black no-underline">
+                    <span className="text-xl">📝</span>
+                    <span className="text-[10px] font-bold">Register</span>
+                </Link>
+                <Link href="/dashboard" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">📊</span>
+                    <span className="text-[10px] font-bold">Admin</span>
+                </Link>
+                <Link href="/students" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">👥</span>
+                    <span className="text-[10px] font-bold">Students</span>
+                </Link>
+            </div>
         </div>
     );
 }

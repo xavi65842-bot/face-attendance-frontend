@@ -67,29 +67,41 @@ function Countdown({ endsAt }) {
 
 // ── Login screen ──────────────────────────────────────────────────────────
 function LoginScreen({ onLogin }) {
-    const [lecturerId, setLecturerId] = useState('');
+    const [identifier, setIdentifier] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [showPicker, setShowPicker] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const id = lecturerId.trim().toUpperCase();
-        if (!id) { setError('Please enter your Lecturer ID.'); return; }
+        const id = identifier.trim();
+        const pass = password.trim();
+        if (!id) { setError('Please enter your Username or Lecturer ID.'); return; }
+        if (!pass) { setError('Please enter your password.'); return; }
+
         setLoading(true);
         setError('');
-        const res = await validateLecturer(id);
+        const res = await loginLecturer(id, pass);
         setLoading(false);
-        if (res.success) {
+        if (res.success && res.lecturer) {
             localStorage.setItem('fa_lecturer', JSON.stringify(res.lecturer));
-            toast.success(res.message || `Welcome, ${res.lecturer.full_name}!`);
+            toast.success(res.message || `Welcome, ${res.lecturer.full_name}!`, { icon: '👨🏾‍🏫' });
             onLogin(res.lecturer);
         } else {
-            setError(res.message || 'Invalid Lecturer ID.');
+            setError(res.message || 'Invalid username or password.');
         }
     };
 
+    const selectFaculty = (lec) => {
+        setIdentifier(lec.username);
+        setPassword(lec.password);
+        setError('');
+        setShowPicker(false);
+    };
+
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-20 md:pb-0" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
             <style>{`
                 @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
                 @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 25px rgba(37,99,235,0.3); } 50% { box-shadow: 0 0 50px rgba(16,185,129,0.5); } }
@@ -109,7 +121,7 @@ function LoginScreen({ onLogin }) {
             {/* Navbar */}
             <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3 flex-shrink-0">
+                    <Link href="/" className="flex items-center gap-3 no-underline flex-shrink-0">
                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
                             SH
                         </div>
@@ -122,23 +134,11 @@ function LoginScreen({ onLogin }) {
                             </div>
                             <span className="hidden md:block text-slate-400 text-xs">Instructor Session Terminal</span>
                         </div>
-                    </div>
+                    </Link>
 
-                    <div className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
-                        <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                            Kiosk
-                        </Link>
-                        <Link href="/dashboard" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                            Dashboard
-                        </Link>
-                        <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                            Students
-                        </Link>
-                        <Link href="/lecturer" className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
-                            Faculty
-                        </Link>
-                        <Link href="/register" className="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline">
-                            + Register
+                    <div className="flex items-center gap-2">
+                        <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white bg-slate-900 border border-slate-800 transition-all no-underline">
+                            ← Return to Kiosk
                         </Link>
                     </div>
                 </div>
@@ -170,22 +170,22 @@ function LoginScreen({ onLogin }) {
                             </h1>
 
                             <p className="text-slate-200 text-base sm:text-lg max-w-xl leading-relaxed mb-6 font-medium">
-                                Sign in with your official Salvation Heritage Instructor ID to manage classroom attendance sessions.
+                                Sign in with your username and password to open classroom attendance sessions for students.
                             </p>
 
                             <div className="flex flex-wrap gap-3">
                                 <div className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md">
-                                    <span className="text-2xl">🎓</span>
+                                    <span className="text-2xl">👨🏾‍🏫</span>
                                     <div>
-                                        <p className="text-white font-black text-xl leading-none">LEC001-020</p>
-                                        <p className="text-emerald-300 text-xs mt-0.5">Faculty IDs</p>
+                                        <p className="text-white font-black text-xl leading-none">13 Faculty Members</p>
+                                        <p className="text-emerald-300 text-xs mt-0.5">Nigerian Faculty Directory</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md">
                                     <span className="text-2xl">⏱️</span>
                                     <div>
-                                        <p className="text-white font-black text-xl leading-none">Live Kiosk Control</p>
-                                        <p className="text-emerald-300 text-xs mt-0.5">Automated Attendance</p>
+                                        <p className="text-white font-black text-xl leading-none">Live Kiosk Sync</p>
+                                        <p className="text-emerald-300 text-xs mt-0.5">Biometric Face Tracking</p>
                                     </div>
                                 </div>
                             </div>
@@ -207,8 +207,8 @@ function LoginScreen({ onLogin }) {
             </div>
 
             {/* Login Card */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-                <div className="max-w-md mx-auto" data-aos="zoom-in" data-aos-delay="300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex-1">
+                <div className="max-w-lg mx-auto" data-aos="zoom-in" data-aos-delay="300">
                     <div className="rounded-3xl overflow-hidden bg-slate-900 border border-blue-500/30 shadow-2xl">
                         <div className="px-6 py-5 flex items-center gap-3 border-b border-slate-800 bg-slate-950/50">
                             <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-white text-lg bg-gradient-to-r from-blue-600 to-emerald-600">
@@ -216,39 +216,108 @@ function LoginScreen({ onLogin }) {
                             </div>
                             <div>
                                 <p className="font-bold text-white">Faculty Authentication</p>
-                                <p className="text-xs text-slate-400">Salvation Heritage Instructor (e.g. LEC001)</p>
+                                <p className="text-xs text-slate-400">Salvation Heritage Instructor Portal</p>
                             </div>
                         </div>
-                        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
-                                    Lecturer ID <span className="text-emerald-400">*</span>
+                                <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                    Username or Lecturer ID <span className="text-emerald-400">*</span>
                                 </label>
                                 <input
                                     type="text"
-                                    value={lecturerId}
-                                    onChange={e => { setLecturerId(e.target.value); setError(''); }}
-                                    placeholder="e.g. LEC001"
+                                    value={identifier}
+                                    onChange={e => { setIdentifier(e.target.value); setError(''); }}
+                                    placeholder="e.g. babatunde.adeyemi or LEC001"
                                     autoFocus
-                                    className="w-full px-4 py-3 rounded-2xl border text-sm font-mono tracking-widest focus:outline-none focus:border-emerald-500 bg-slate-950 border-slate-700 text-white transition-all uppercase"
+                                    className="w-full px-4 py-3 rounded-2xl border text-sm font-mono focus:outline-none focus:border-emerald-500 bg-slate-950 border-slate-700 text-white transition-all"
                                 />
-                                {error && (
-                                    <div className="mt-2 flex items-start gap-2 rounded-2xl px-3 py-2.5 bg-rose-500/10 border border-rose-500/30">
-                                        <span className="text-rose-400 flex-shrink-0 text-sm">⚠</span>
-                                        <p className="text-rose-400 text-xs font-medium">{error}</p>
-                                    </div>
-                                )}
                             </div>
+
+                            <div>
+                                <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                    Password <span className="text-emerald-400">*</span>
+                                </label>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={e => { setPassword(e.target.value); setError(''); }}
+                                    placeholder="Enter your password"
+                                    className="w-full px-4 py-3 rounded-2xl border text-sm focus:outline-none focus:border-emerald-500 bg-slate-950 border-slate-700 text-white transition-all"
+                                />
+                            </div>
+
+                            {error && (
+                                <div className="mt-2 flex items-start gap-2 rounded-2xl px-3 py-2.5 bg-rose-500/10 border border-rose-500/30">
+                                    <span className="text-rose-400 flex-shrink-0 text-sm">⚠</span>
+                                    <p className="text-rose-400 text-xs font-medium">{error}</p>
+                                </div>
+                            )}
+
                             <button type="submit" disabled={loading}
                                 className="w-full py-4 rounded-2xl text-white font-black text-sm bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-xl shadow-blue-600/30 active:scale-95 transition-all disabled:opacity-50">
                                 {loading ? '⏳ Verifying...' : '🔐 Sign In to Session Control'}
                             </button>
+
+                            {/* 13 Nigerian Faculty Members Quick Profile Selector */}
+                            <div className="pt-3 border-t border-slate-800">
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPicker(v => !v)}
+                                    className="w-full py-2.5 px-4 rounded-2xl text-xs font-bold text-slate-300 bg-slate-950 border border-slate-800 hover:border-emerald-500/50 flex items-center justify-between transition-all">
+                                    <span className="flex items-center gap-2">
+                                        <span>⚡</span>
+                                        <span>Select from 13 Nigerian Faculty Profiles (1-Click)</span>
+                                    </span>
+                                    <span>{showPicker ? '▲' : '▼'}</span>
+                                </button>
+
+                                {showPicker && (
+                                    <div className="mt-3 max-h-56 overflow-y-auto space-y-1.5 pr-1">
+                                        {NIGERIAN_FACULTY.map(lec => (
+                                            <button
+                                                key={lec.lecturer_id}
+                                                type="button"
+                                                onClick={() => selectFaculty(lec)}
+                                                className="w-full p-2.5 rounded-2xl bg-slate-950/80 hover:bg-blue-600/20 border border-slate-800 hover:border-blue-500/40 text-left transition-all flex items-center justify-between gap-2">
+                                                <div className="flex items-center gap-2.5 min-w-0">
+                                                    <span className="text-xl">{lec.avatar}</span>
+                                                    <div className="min-w-0">
+                                                        <p className="text-xs font-bold text-white truncate">{lec.full_name}</p>
+                                                        <p className="text-[10px] text-emerald-400 truncate">{lec.department} • <span className="font-mono text-slate-400">{lec.username}</span></p>
+                                                    </div>
+                                                </div>
+                                                <span className="text-[10px] font-bold px-2 py-1 rounded-lg bg-blue-500/15 text-blue-300 border border-blue-500/30 flex-shrink-0">
+                                                    Select
+                                                </span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </form>
                     </div>
-                    <p className="text-center text-xs text-slate-500 mt-4">
-                        Salvation Heritage Faculty Terminal • Test IDs: LEC001 - LEC020
-                    </p>
                 </div>
+            </div>
+
+            {/* Mobile Bottom Bar */}
+            <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 py-2 px-3 flex items-center justify-around shadow-2xl shadow-black">
+                <Link href="/" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">📸</span>
+                    <span className="text-[10px] font-bold">Kiosk</span>
+                </Link>
+                <Link href="/register" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">📝</span>
+                    <span className="text-[10px] font-bold">Register</span>
+                </Link>
+                <Link href="/dashboard" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">📊</span>
+                    <span className="text-[10px] font-bold">Admin</span>
+                </Link>
+                <Link href="/students" className="flex flex-col items-center gap-1 py-1 px-3 text-slate-400 hover:text-white no-underline">
+                    <span className="text-xl">👥</span>
+                    <span className="text-[10px] font-bold">Students</span>
+                </Link>
             </div>
         </div>
     );
