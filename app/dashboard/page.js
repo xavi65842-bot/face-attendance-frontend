@@ -102,12 +102,12 @@ export default function DashboardPage() {
                 }} />
 
                 {/* ── Top School Banner ── */}
-                <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <span>🛡️</span>
-                        <span>Salvation Heritage Schools • Administrative Terminal</span>
+                <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-3 sm:px-4 font-semibold tracking-wide border-b border-white/10 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                        <span className="flex-shrink-0">🛡️</span>
+                        <span className="truncate">Salvation Heritage Schools • Admin</span>
                     </div>
-                    <div className="text-emerald-400 font-bold text-[10px]">
+                    <div className="text-emerald-400 font-bold text-[10px] flex-shrink-0 hidden sm:block">
                         Admin Authorization Active
                     </div>
                 </div>

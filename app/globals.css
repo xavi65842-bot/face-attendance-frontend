@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+/* ── Critical Mobile Responsive Base ── */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background-color: #020617; /* slate-950 — prevents white flash/gaps */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* xs breakpoint helper (< 480px show) */
+@media (min-width: 480px) {
+  .hidden-xs { display: none !important; }
+}
+
 /* Base styles and animations */
 @layer utilities {
   .animate-fade-in {

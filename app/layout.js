@@ -20,7 +20,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <body className="min-h-screen bg-gray-50">
+            <body className="min-h-screen bg-slate-950 w-full overflow-x-hidden">
                 <ThemeWrapper>
                     <main className="min-h-screen">
                         {children}

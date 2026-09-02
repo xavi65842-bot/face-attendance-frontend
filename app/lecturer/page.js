@@ -159,13 +159,13 @@ function LoginScreen({ onLogin }) {
             }} />
 
             {/* Top School Banner */}
-            <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <span>🏛️</span>
-                    <span>Salvation Heritage Schools • Faculty Authentication Portal</span>
+            <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-3 sm:px-4 font-semibold tracking-wide border-b border-white/10 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="flex-shrink-0">🏛️</span>
+                    <span className="truncate">Salvation Heritage Schools • Faculty Portal</span>
                 </div>
-                <div className="text-slate-400 text-[10px]">
-                    13 Active Nigerian Instructors
+                <div className="text-slate-400 text-[10px] flex-shrink-0 hidden sm:block">
+                    13 Faculty Members
                 </div>
             </div>
 
@@ -488,66 +488,69 @@ function SessionPanel({ lecturer, onLogout }) {
             <StudentModal student={selectedStudent} onClose={() => setSelectedStudent(null)} />
 
             {/* Top School Banner */}
-            <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <span>🏛️</span>
-                    <span>Salvation Heritage Schools • Faculty Terminal</span>
+            <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-3 sm:px-4 font-semibold tracking-wide border-b border-white/10 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="flex-shrink-0">🏛️</span>
+                    <span className="truncate">Salvation Heritage Schools • Faculty</span>
                 </div>
-                <div className="text-emerald-400 font-bold text-[10px]">
-                    Logged in as {lecturer.full_name}
+                <div className="text-emerald-400 font-bold text-[10px] flex-shrink-0 truncate max-w-[140px] sm:max-w-none">
+                    {lecturer.full_name}
                 </div>
             </div>
 
             {/* Navbar */}
             <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-                    <Link href="/" className="flex items-center gap-3 no-underline flex-shrink-0">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
+                {/* Row 1: Logo + Lecturer info + Sign Out */}
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
+                    <Link href="/" className="flex items-center gap-2 sm:gap-3 no-underline flex-shrink-0 min-w-0">
+                        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-white font-black text-xs sm:text-sm shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500 flex-shrink-0">
                             SH
                         </div>
-                        <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                                <span className="font-black text-white text-base sm:text-lg">Salvation Heritage</span>
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                    Faculty Active
+                        <div className="min-w-0 hidden xs:block">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                                <span className="font-black text-white text-sm sm:text-base leading-tight">Salvation Heritage</span>
+                                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 whitespace-nowrap">
+                                    Faculty
                                 </span>
                             </div>
-                            <span className="hidden md:block text-slate-400 text-xs">Instructor Session Terminal</span>
+                            <span className="hidden md:block text-slate-400 text-[11px]">Instructor Session Terminal</span>
                         </div>
                     </Link>
 
-                    {/* Tab Navigation */}
-                    <div className="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                    {/* Lecturer identity + logout */}
+                    <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
+                        <div className="hidden sm:block text-right">
+                            <p className="text-xs font-bold text-white leading-tight">{lecturer.full_name}</p>
+                            <p className="text-[10px] text-emerald-400 font-mono">{lecturer.department} • {lecturer.lecturer_id}</p>
+                        </div>
+                        <button onClick={onLogout}
+                            className="px-3 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex items-center gap-1 shadow-sm active:scale-95 whitespace-nowrap">
+                            <span>🚪</span>
+                            <span className="hidden sm:inline">Sign Out</span>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Row 2: Full-width Tab Navigation (always visible) */}
+                <div className="border-t border-slate-800/60 px-3 sm:px-6 py-2">
+                    <div className="max-w-7xl mx-auto flex items-center gap-2 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
                         <button onClick={() => setActiveTab('live')}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                            className={`flex-1 px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                                 activeTab === 'live'
                                     ? 'text-white bg-gradient-to-r from-blue-600 to-emerald-600 shadow-md shadow-blue-600/30'
                                     : 'text-slate-400 hover:text-white hover:bg-slate-800'
                             }`}>
                             <span>🎯</span>
-                            <span>{activeSession ? 'Live Active Session' : 'Session Portal'}</span>
+                            <span>{activeSession ? 'Live Session' : 'Session Portal'}</span>
                         </button>
                         <button onClick={() => { setActiveTab('history'); loadHistory(); }}
-                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+                            className={`flex-1 px-3 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                                 activeTab === 'history'
                                     ? 'text-white bg-gradient-to-r from-blue-600 to-emerald-600 shadow-md shadow-blue-600/30'
                                     : 'text-slate-400 hover:text-white hover:bg-slate-800'
                             }`}>
                             <span>🕒</span>
-                            <span>24h & Past Classes ({historySessions.length})</span>
-                        </button>
-                    </div>
-
-                    {/* Lecturer identity + logout */}
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                        <div className="hidden sm:block text-right">
-                            <p className="text-xs font-bold text-white">{lecturer.full_name}</p>
-                            <p className="text-[10px] text-emerald-400 font-mono">{lecturer.department} • {lecturer.lecturer_id}</p>
-                        </div>
-                        <button onClick={onLogout}
-                            className="px-4 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
-                            <span>🚪</span>
-                            <span>Sign Out</span>
+                            <span>24h &amp; Past Classes ({historySessions.length})</span>
                         </button>
                     </div>
                 </div>
