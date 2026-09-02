@@ -16,11 +16,17 @@ const DEPARTMENTS = [
     'SS3',
 ];
 
+// Generate a unique SAL-XXXX student ID
+function generateStudentId() {
+    const num = Math.floor(1000 + Math.random() * 9000); // 4-digit: 1000-9999
+    return `SAL-${num}`;
+}
+
 const RULES = {
     student_id: {
-        validate: v => v.trim().length >= 3 && /^[A-Z0-9-]+$/i.test(v.trim()),
-        message: 'Student ID must be at least 3 characters (letters, numbers, dashes).',
-        hint: 'e.g. STU-1001',
+        validate: v => /^SAL-\d{4}$/i.test(v.trim()),
+        message: 'Student ID must be in SAL-XXXX format.',
+        hint: 'Auto-generated unique Salvation Heritage ID',
     },
     full_name: {
         validate: v => /^[a-zA-Z\s''-]{3,}$/.test(v.trim()),
@@ -134,7 +140,7 @@ function InputField({ label, required, error, hint, children }) {
 
 export default function RegisterPage() {
     const [step, setStep] = useState(1);
-    const [formData, setFormData] = useState({ student_id: '', full_name: '', department: '', intake_year: new Date().getFullYear().toString(), intake_month: 'January', semester: '' });
+    const [formData, setFormData] = useState({ student_id: generateStudentId(), full_name: '', department: '', intake_year: new Date().getFullYear().toString(), intake_month: 'January', semester: '' });
     const [errors, setErrors] = useState({});
     const [touched, setTouched] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -145,17 +151,20 @@ export default function RegisterPage() {
     const [idOwner, setIdOwner] = useState(null);
     const debounceRef = useRef(null);
 
+    // Auto-check if auto-generated ID is available; regenerate if taken
     useEffect(() => {
         const id = formData.student_id.trim().toUpperCase();
-        if (id.length < 3) { setIdStatus('idle'); setIdOwner(null); return; }
+        if (!id || id.length < 3) { setIdStatus('idle'); setIdOwner(null); return; }
         setIdStatus('checking');
         clearTimeout(debounceRef.current);
         debounceRef.current = setTimeout(async () => {
             try {
                 const res = await checkStudentId(id);
                 if (res.exists) {
-                    setIdStatus('taken'); setIdOwner(res.student || null);
-                    setErrors(p => ({ ...p, student_id: res.message || 'This Student ID is already registered.' }));
+                    // Auto-regenerate a new unique ID if the generated one is taken
+                    const newId = generateStudentId();
+                    setFormData(p => ({ ...p, student_id: newId }));
+                    setIdStatus('idle'); setIdOwner(null);
                 } else {
                     setIdStatus('available'); setIdOwner(null);
                     setErrors(p => ({ ...p, student_id: '' }));
@@ -247,7 +256,7 @@ export default function RegisterPage() {
     }, [formData]);
 
     const handleReset = () => {
-        setFormData({ student_id: '', full_name: '', department: '', intake_year: new Date().getFullYear().toString(), intake_month: 'January', semester: '' });
+        setFormData({ student_id: generateStudentId(), full_name: '', department: '', intake_year: new Date().getFullYear().toString(), intake_month: 'January', semester: '' });
         setErrors({}); setTouched({}); setRegistered(null); setStep(1);
     };
 
@@ -405,7 +414,7 @@ export default function RegisterPage() {
                             </div>
                             <div className="space-y-3">
                                 {[
-                                    ['Student ID', 'Official ID (e.g. STU-1001), unique.'],
+                                    ['Student ID', 'Auto-generated SAL-XXXX, unique per student.'],
                                     ['Full Name', 'Full legal student name.'],
                                     ['Class', 'Select current grade: JSS1 to SS3.'],
                                     ['Term', 'First, Second, or Third Term.'],
@@ -456,33 +465,36 @@ export default function RegisterPage() {
                                     </div>
 
                                     <div className="p-6 sm:p-8 space-y-5">
-                                        {/* Student ID */}
-                                        <InputField label="Student ID" required error={touched.student_id && errors.student_id} hint={!errors.student_id ? RULES.student_id.hint : ''}>
-                                            <div className="relative">
-                                                <input type="text" name="student_id" value={formData.student_id}
-                                                    onChange={handleChange} onBlur={handleBlur}
-                                                    placeholder="e.g. STU-1001"
-                                                    className={`${inputCls('student_id')} pr-10`}
-                                                    style={inputBg} />
-                                                <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm">
-                                                    {idStatus === 'checking'  && <span className="text-slate-400 animate-spin inline-block">⟳</span>}
-                                                    {idStatus === 'available' && <span className="text-emerald-400 font-bold">✓</span>}
-                                                    {idStatus === 'taken'     && <span className="text-rose-400 font-bold">✕</span>}
-                                                </div>
-                                            </div>
-                                            {idStatus === 'taken' && (
-                                                <div className="mt-2 flex items-start gap-2 rounded-2xl px-3.5 py-2.5 bg-rose-500/10 border border-rose-500/30">
-                                                    <span className="text-rose-400 flex-shrink-0">🚫</span>
-                                                    <div>
-                                                        <p className="text-rose-400 text-xs font-bold">Student ID Already Registered</p>
-                                                        {idOwner?.full_name && <p className="text-rose-300 text-xs mt-0.5">Belongs to <span className="font-semibold">{idOwner.full_name}</span>{idOwner.department && ` (${idOwner.department})`}.</p>}
+                                        {/* Student ID — Auto-generated SAL-XXXX */}
+                                        <InputField label="Student ID (Auto-Generated)" required error={touched.student_id && errors.student_id} hint={!errors.student_id ? RULES.student_id.hint : ''}>
+                                            <div className="relative flex gap-2">
+                                                <div className="flex-1 relative">
+                                                    <input type="text" name="student_id" value={formData.student_id}
+                                                        readOnly
+                                                        className={`${inputCls('student_id')} pr-10 font-mono text-base tracking-widest cursor-default`}
+                                                        style={{ ...inputBg, background: 'rgba(2, 6, 23, 0.5)' }} />
+                                                    <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm">
+                                                        {idStatus === 'checking'  && <span className="text-slate-400 animate-spin inline-block">⟳</span>}
+                                                        {idStatus === 'available' && <span className="text-emerald-400 font-bold">✓</span>}
                                                     </div>
                                                 </div>
-                                            )}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const newId = generateStudentId();
+                                                        setFormData(p => ({ ...p, student_id: newId }));
+                                                        setIdStatus('idle');
+                                                        toast.success(`New ID generated: ${newId}`, { icon: '🔄', duration: 2000 });
+                                                    }}
+                                                    className="px-3 py-2.5 rounded-xl text-xs font-bold text-blue-300 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 transition-all flex-shrink-0 active:scale-95"
+                                                    title="Generate new unique ID">
+                                                    🔄 New
+                                                </button>
+                                            </div>
                                             {idStatus === 'available' && formData.student_id.length >= 3 && (
                                                 <div className="mt-2 flex items-center gap-2 rounded-2xl px-3.5 py-2 bg-emerald-500/10 border border-emerald-500/30">
                                                     <span className="text-emerald-400 font-bold">✓</span>
-                                                    <p className="text-xs font-semibold text-emerald-400">Student ID is available</p>
+                                                    <p className="text-xs font-semibold text-emerald-400">Student ID <span className="font-mono">{formData.student_id}</span> is unique and available</p>
                                                 </div>
                                             )}
                                         </InputField>

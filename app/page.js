@@ -558,6 +558,7 @@ export default function HomePage() {
                                     <span className="text-xs font-mono text-slate-400">{lastAttendance.timestamp}</span>
                                 </div>
 
+                                {/* Student Identity */}
                                 <div className="flex items-center gap-4">
                                     <div className="w-20 h-20 rounded-2xl overflow-hidden bg-slate-950 border-2 border-emerald-500/50 flex-shrink-0 shadow-lg">
                                         <img src={PHOTO_URL(lastAttendance.student.student_id)}
@@ -567,20 +568,43 @@ export default function HomePage() {
                                     </div>
                                     <div className="min-w-0">
                                         <h3 className="font-black text-xl text-white truncate">{lastAttendance.student.full_name}</h3>
-                                        <p className="text-xs text-emerald-400 font-mono font-bold">{lastAttendance.student.student_id}</p>
-                                        <p className="text-xs text-slate-300 mt-1">{lastAttendance.student.department}</p>
+                                        <p className="text-sm text-emerald-400 font-mono font-black tracking-wider">{lastAttendance.student.student_id}</p>
+                                        <p className="text-xs text-slate-300 mt-0.5">{lastAttendance.student.department || 'Salvation Heritage'}</p>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2 bg-slate-950/70 p-3 rounded-2xl border border-slate-800 text-xs">
-                                    <div>
-                                        <p className="text-slate-400 text-[10px] uppercase font-bold">Class</p>
-                                        <p className="font-bold text-white truncate">{lastAttendance.student.department || '—'}</p>
+                                {/* Student Details Grid */}
+                                <div className="grid grid-cols-2 gap-2 text-xs">
+                                    <div className="bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
+                                        <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Student ID</p>
+                                        <p className="font-black text-emerald-400 font-mono text-sm mt-0.5">{lastAttendance.student.student_id}</p>
                                     </div>
-                                    <div>
-                                        <p className="text-slate-400 text-[10px] uppercase font-bold">Term</p>
-                                        <p className="font-bold text-white">{lastAttendance.student.semester === 1 ? '1st Term' : lastAttendance.student.semester === 2 ? '2nd Term' : '3rd Term'}</p>
+                                    <div className="bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
+                                        <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Class</p>
+                                        <p className="font-bold text-white text-sm mt-0.5">{lastAttendance.student.department || '—'}</p>
                                     </div>
+                                    <div className="bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
+                                        <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Term</p>
+                                        <p className="font-bold text-white text-sm mt-0.5">
+                                            {lastAttendance.student.semester === 1 ? '1st Term' : lastAttendance.student.semester === 2 ? '2nd Term' : lastAttendance.student.semester === 3 ? '3rd Term' : '—'}
+                                        </p>
+                                    </div>
+                                    <div className="bg-slate-950/70 p-3 rounded-2xl border border-slate-800">
+                                        <p className="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Year Intake</p>
+                                        <p className="font-bold text-white text-sm mt-0.5">{lastAttendance.student.year_intake || '—'}</p>
+                                    </div>
+                                </div>
+
+                                {/* Status Banner */}
+                                <div className={`rounded-2xl px-4 py-3 text-center text-xs font-bold ${
+                                    lastAttendance.alreadyMarked
+                                        ? 'bg-amber-500/10 border border-amber-500/30 text-amber-300'
+                                        : 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
+                                }`}>
+                                    {lastAttendance.alreadyMarked
+                                        ? '👋 Welcome back! Your attendance was already recorded today.'
+                                        : `✅ Attendance successfully marked for ${lastAttendance.student.full_name}`
+                                    }
                                 </div>
                             </div>
                         ) : (
