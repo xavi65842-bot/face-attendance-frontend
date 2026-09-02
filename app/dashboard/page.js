@@ -88,13 +88,31 @@ export default function DashboardPage() {
 
     return (
         <AdminGuard title="Salvation Heritage Analytics & Management Dashboard">
-            <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-20 md:pb-0" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+            <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col mobile-pb-safe md:pb-0" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
                 <style>{`
                     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
                     @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
                     @keyframes count-up { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
                     select option { background-color: #0f172a !important; color: #fff !important; }
                     select { color-scheme: dark; }
+                    
+                    /* Mobile-specific dashboard styles */
+                    @media (max-width: 640px) {
+                        .mobile-dashboard-card { padding: 1rem; border-radius: 1.5rem; }
+                        .mobile-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+                        .mobile-stat-text { font-size: 1.5rem; line-height: 1.2; }
+                        .mobile-table-wrapper { 
+                            overflow-x: auto; 
+                            -webkit-overflow-scrolling: touch;
+                            border-radius: 1rem;
+                        }
+                    }
+                    
+                    @media (max-width: 480px) {
+                        .xs-stat-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+                        .xs-stat-text { font-size: 1.25rem; line-height: 1.2; }
+                        .xs-mobile-padding { padding: 0.75rem; }
+                    }
                 `}</style>
 
                 <Toaster position="top-right" toastOptions={{
@@ -102,27 +120,29 @@ export default function DashboardPage() {
                 }} />
 
                 {/* ── Top School Banner ── */}
-                <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-3 sm:px-4 font-semibold tracking-wide border-b border-white/10 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 min-w-0">
-                        <span className="flex-shrink-0">🛡️</span>
-                        <span className="truncate">Salvation Heritage Schools • Admin</span>
-                    </div>
-                    <div className="text-emerald-400 font-bold text-[10px] flex-shrink-0 hidden sm:block">
-                        Admin Authorization Active
+                <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[10px] sm:text-[11px] py-1.5 mobile-px-safe sm:px-4 font-semibold tracking-wide border-b border-white/10">
+                    <div className="flex items-center justify-between gap-2 max-w-7xl mx-auto">
+                        <div className="flex items-center gap-1.5 min-w-0">
+                            <span className="flex-shrink-0">🛡️</span>
+                            <span className="truncate">Salvation Heritage Schools • Admin</span>
+                        </div>
+                        <div className="text-emerald-400 font-bold text-[9px] sm:text-[10px] flex-shrink-0 hidden sm:block">
+                            Admin Authorization Active
+                        </div>
                     </div>
                 </div>
 
                 {/* ── Navbar ── */}
                 <header className="sticky top-0 z-40 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
-                        <Link href="/" className="flex items-center gap-3 no-underline flex-shrink-0">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
+                    <div className="max-w-7xl mx-auto mobile-px-safe sm:px-6 h-14 sm:h-16 md:h-20 flex items-center justify-between gap-2 sm:gap-4">
+                        <Link href="/" className="flex items-center gap-2 sm:gap-3 no-underline flex-shrink-0 min-w-0">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center text-white font-black text-xs sm:text-sm md:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
                                 SH
                             </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <span className="font-black text-white text-base sm:text-lg">Salvation Heritage</span>
-                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                            <div className="min-w-0">
+                                <div className="flex items-center gap-1 sm:gap-2">
+                                    <span className="font-black text-white text-sm sm:text-base md:text-lg truncate">Salvation Heritage</span>
+                                    <span className="text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex-shrink-0">
                                         Analytics
                                     </span>
                                 </div>
@@ -132,32 +152,33 @@ export default function DashboardPage() {
 
                         {/* Desktop Navbar (Faculty removed from admin navbar) */}
                         <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
-                            <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            <Link href="/" className="px-3 md:px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
                                 Kiosk
                             </Link>
-                            <Link href="/dashboard" className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
+                            <Link href="/dashboard" className="px-3 md:px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
                                 Dashboard
                             </Link>
-                            <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            <Link href="/students" className="px-3 md:px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
                                 Students
                             </Link>
-                            <Link href="/register" className="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline">
+                            <Link href="/register" className="px-3 md:px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline">
                                 + Register
                             </Link>
                         </nav>
 
-                        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+                        <div className="flex items-center gap-1 sm:gap-2 md:gap-3 flex-shrink-0">
                             <div className="hidden sm:block text-right">
-                                <p className="text-xs text-slate-400">{now.toLocaleDateString('en-MY', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
-                                <p className="text-sm font-mono font-bold text-emerald-400">{now.toLocaleTimeString()}</p>
+                                <p className="text-[10px] sm:text-xs text-slate-400">{now.toLocaleDateString('en-MY', { weekday: 'short', month: 'short', day: 'numeric' })}</p>
+                                <p className="text-xs sm:text-sm font-mono font-bold text-emerald-400">{now.toLocaleTimeString()}</p>
                             </div>
                             <button onClick={fetchData}
-                                className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all">
-                                ↻ Refresh
+                                className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all">
+                                <span>↻</span>
+                                <span className="hidden xs:inline">Refresh</span>
                             </button>
                             <button onClick={() => setMobileOpen(v => !v)}
                                 aria-label="Toggle mobile menu"
-                                className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:bg-slate-800 transition-colors">
+                                className="md:hidden w-8 h-8 sm:w-10 sm:h-10 touch-target flex items-center justify-center rounded-lg sm:rounded-xl bg-slate-900 text-slate-200 border border-slate-800 hover:bg-slate-800 transition-colors">
                                 {mobileOpen ? '✕' : '☰'}
                             </button>
                         </div>
@@ -165,18 +186,22 @@ export default function DashboardPage() {
 
                     {/* Mobile Navigation Dropdown */}
                     {mobileOpen && (
-                        <div className="md:hidden border-t border-slate-800 bg-slate-950 px-4 py-3 space-y-2">
-                            <Link href="/" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-900 no-underline">
-                                📸 Attendance Kiosk
+                        <div className="md:hidden border-t border-slate-800 bg-slate-950 mobile-px-safe py-3 space-y-2">
+                            <Link href="/" onClick={() => setMobileOpen(false)} className="mobile-nav-item text-slate-300 hover:bg-slate-900">
+                                <span className="text-lg">📸</span>
+                                <span className="text-xs font-bold">Attendance Kiosk</span>
                             </Link>
-                            <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-white bg-blue-600 no-underline">
-                                📊 Admin Dashboard
+                            <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="mobile-nav-item text-white bg-blue-600">
+                                <span className="text-lg">📊</span>
+                                <span className="text-xs font-bold">Admin Dashboard</span>
                             </Link>
-                            <Link href="/students" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 hover:bg-slate-900 no-underline">
-                                👥 Student Directory
+                            <Link href="/students" onClick={() => setMobileOpen(false)} className="mobile-nav-item text-slate-300 hover:bg-slate-900">
+                                <span className="text-lg">👥</span>
+                                <span className="text-xs font-bold">Student Directory</span>
                             </Link>
-                            <Link href="/register" onClick={() => setMobileOpen(false)} className="block py-2.5 px-3 rounded-xl text-xs font-bold text-emerald-400 hover:bg-slate-900 no-underline">
-                                📝 Register Student
+                            <Link href="/register" onClick={() => setMobileOpen(false)} className="mobile-nav-item text-emerald-400 hover:bg-slate-900">
+                                <span className="text-lg">📝</span>
+                                <span className="text-xs font-bold">Register Student</span>
                             </Link>
                         </div>
                     )}
