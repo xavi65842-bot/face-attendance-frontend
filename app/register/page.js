@@ -36,30 +36,29 @@ const RULES = {
 function DuplicateFaceAlert({ duplicateInfo, onClose }) {
     if (!duplicateInfo) return null;
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}>
-            <div className="w-full max-w-md rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(145deg, #1a0a0a, #0f0f0f)', border: '1px solid rgba(193,18,31,0.5)', boxShadow: '0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(193,18,31,0.2)' }}>
-                <div className="px-6 py-5 text-center" style={{ background: 'linear-gradient(135deg, rgba(193,18,31,0.2), rgba(193,18,31,0.05))', borderBottom: '1px solid rgba(193,18,31,0.2)' }}>
-                    <div className="text-5xl mb-3">🚫</div>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md">
+            <div className="w-full max-w-md rounded-3xl overflow-hidden bg-slate-900 border border-blue-500/40 shadow-2xl">
+                <div className="px-6 py-6 text-center bg-gradient-to-r from-blue-900/30 to-emerald-900/30 border-b border-blue-500/20">
+                    <div className="text-5xl mb-3">🛡️</div>
                     <h3 className="text-xl font-black text-white mb-1">Duplicate Face Detected!</h3>
-                    <p className="text-red-400 text-sm">Security system blocked duplicate registration</p>
+                    <p className="text-emerald-400 text-xs font-semibold">Salvation Heritage Biometric Protection</p>
                 </div>
                 <div className="p-6">
-                    <p className="text-gray-400 text-sm mb-4 text-center">This face is already registered to:</p>
-                    <div className="rounded-xl p-4 mb-4 text-center" style={{ background: 'rgba(193,18,31,0.1)', border: '1px solid rgba(193,18,31,0.3)' }}>
+                    <p className="text-slate-400 text-sm mb-4 text-center">This face is already registered to:</p>
+                    <div className="rounded-2xl p-4 mb-4 text-center bg-slate-950/80 border border-blue-500/30">
                         <p className="font-black text-white text-lg">{duplicateInfo.existing_student}</p>
-                        <p className="text-sm text-gray-400 font-mono mt-1">ID: {duplicateInfo.existing_id}</p>
-                        <p className="text-sm font-bold mt-2" style={{ color: '#ff6b6b' }}>
-                            Similarity: {duplicateInfo.similarity}%
+                        <p className="text-xs text-slate-400 font-mono mt-1">Student ID: {duplicateInfo.existing_id}</p>
+                        <p className="text-xs font-bold mt-2 text-emerald-400">
+                            Biometric Match: {duplicateInfo.similarity}%
                         </p>
                     </div>
-                    <div className="rounded-xl p-3 mb-4" style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                        <p className="text-xs text-amber-300 text-center">
-                            Each person can only register once. Amazon Rekognition detected this face matches an existing registration.
+                    <div className="rounded-2xl p-3.5 mb-4 bg-blue-500/10 border border-blue-500/20">
+                        <p className="text-xs text-blue-300 text-center leading-relaxed">
+                            Each student may only be registered once in the Salvation Heritage system.
                         </p>
                     </div>
                     <button onClick={onClose}
-                        className="w-full py-3 rounded-xl font-black text-white transition-all hover:scale-[1.02] active:scale-[0.98]"
-                        style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 20px rgba(193,18,31,0.4)' }}>
+                        className="w-full py-3.5 rounded-2xl font-black text-white bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-lg shadow-blue-600/30 active:scale-95 transition-all">
                         Understood
                     </button>
                 </div>
@@ -72,15 +71,15 @@ function FieldError({ msg }) {
     if (!msg) return null;
     return (
         <div className="flex items-start gap-1.5 mt-1.5">
-            <span className="text-red-400 text-xs mt-0.5">⚠</span>
-            <p className="text-red-400 text-xs font-medium">{msg}</p>
+            <span className="text-rose-400 text-xs mt-0.5">⚠</span>
+            <p className="text-rose-400 text-xs font-medium">{msg}</p>
         </div>
     );
 }
 
 function FieldHint({ text }) {
     if (!text) return null;
-    return <p className="text-gray-500 text-xs mt-1">{text}</p>;
+    return <p className="text-slate-500 text-xs mt-1">{text}</p>;
 }
 
 function StepIndicator({ current }) {
@@ -93,22 +92,25 @@ function StepIndicator({ current }) {
                 return (
                     <div key={s.n} className="flex items-center">
                         <div className="flex flex-col items-center gap-1">
-                            <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-black transition-all duration-300"
-                                style={done
-                                    ? { background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: '#fff', boxShadow: '0 0 12px rgba(34,197,94,0.5)' }
+                            <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-black transition-all duration-300 ${
+                                done
+                                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/30'
                                     : active
-                                    ? { background: 'linear-gradient(135deg, #C1121F, #e63946)', color: '#fff', boxShadow: '0 0 16px rgba(193,18,31,0.6)' }
-                                    : { background: 'rgba(255,255,255,0.08)', color: '#6b7280', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/40'
+                                    : 'bg-slate-800 text-slate-400 border border-slate-700'
+                            }`}>
                                 {done ? '✓' : s.n}
                             </div>
-                            <span className="text-[10px] font-semibold whitespace-nowrap"
-                                style={{ color: active ? '#ff6b6b' : done ? '#22c55e' : '#6b7280' }}>
+                            <span className={`text-[10px] font-bold whitespace-nowrap ${
+                                active ? 'text-blue-400' : done ? 'text-emerald-400' : 'text-slate-500'
+                            }`}>
                                 {s.label}
                             </span>
                         </div>
                         {i < steps.length - 1 && (
-                            <div className="w-12 h-px mx-2 mb-5 transition-all duration-500"
-                                style={{ background: done ? '#22c55e' : 'rgba(255,255,255,0.1)' }} />
+                            <div className={`w-12 h-0.5 mx-2 mb-4 transition-all duration-500 ${
+                                done ? 'bg-emerald-500' : 'bg-slate-800'
+                            }`} />
                         )}
                     </div>
                 );
@@ -249,77 +251,78 @@ export default function RegisterPage() {
         setErrors({}); setTouched({}); setRegistered(null); setStep(1);
     };
 
-    const cardStyle = { background: 'linear-gradient(145deg, #111111, #0f0f0f)', border: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' };
-    const inputBg = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' };
+    const cardStyle = { background: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(59, 130, 246, 0.25)', boxShadow: '0 10px 35px rgba(0,0,0,0.5)' };
+    const inputBg = { background: 'rgba(2, 6, 23, 0.8)', border: '1px solid rgba(59, 130, 246, 0.3)' };
 
     return (
-        <div className="min-h-screen" style={{ background: '#0a0a0a', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+        <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
             <AOSInit />
             <style>{`
-                @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
-                @keyframes glow-pulse { 0%,100%{box-shadow:0 0 20px rgba(193,18,31,0.4)} 50%{box-shadow:0 0 40px rgba(193,18,31,0.8),0 0 60px rgba(193,18,31,0.3)} }
-                @keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-                select option { background-color: #1a0a0a !important; color: #fff !important; }
+                @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+                @keyframes glow-pulse { 0%,100%{box-shadow:0 0 25px rgba(37,99,235,0.3)} 50%{box-shadow:0 0 50px rgba(16,185,129,0.5),0 0 70px rgba(37,99,235,0.3)} }
+                select option { background-color: #0f172a !important; color: #fff !important; }
                 select { color-scheme: dark; }
-                input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #111 inset !important; -webkit-text-fill-color: #fff !important; }
+                input:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important; -webkit-text-fill-color: #fff !important; }
             `}</style>
 
             <Toaster position="top-center" toastOptions={{
-                style: { borderRadius: 12, fontSize: 13, fontWeight: 500, background: '#1a0a0a', color: '#fff', border: '1px solid rgba(193,18,31,0.3)' }
+                style: { borderRadius: 14, fontSize: 13, fontWeight: 600, background: '#0f172a', color: '#fff', border: '1px solid rgba(59,130,246,0.3)' }
             }} />
 
+            {/* ── Top School Banner ── */}
+            <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-emerald-900 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-center gap-2">
+                <span>🏛️</span>
+                <span>Salvation Heritage Schools • Biometric Student Enrollment</span>
+            </div>
+
             {/* ── Navbar ── */}
-            <nav className="sticky top-0 z-50 w-full" style={{ background: 'rgba(10,10,10,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 4px 30px rgba(0,0,0,0.5)' }}>
-                <div className="w-full px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+            <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
+                <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 flex-shrink-0 min-w-0">
-                        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white flex-shrink-0"
-                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 16px rgba(193,18,31,0.5)' }}>
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
-                            </svg>
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
+                            SH
                         </div>
                         <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                                <span className="font-bold text-white text-sm sm:text-base truncate">Face Attendance</span>
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
-                                    style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: '#fff' }}>by BENX</span>
+                                <span className="font-black text-white text-base sm:text-lg truncate">Salvation Heritage</span>
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                    Registration
+                                </span>
                             </div>
-                            <span className="hidden md:block text-gray-500 text-xs">Student Registration Portal</span>
+                            <span className="hidden md:block text-slate-400 text-xs">Official Biometric Student Enrollment</span>
                         </div>
                     </div>
-                    <div className="hidden md:flex items-center gap-1 flex-shrink-0">
-                        {[['/', 'Home'], ['/dashboard', 'Dashboard'], ['/register', 'Register', true], ['/students', 'Students'], ['/lecturer', 'Lecturer']].map(([href, label, active]) => (
-                            <Link key={href} href={href}
-                                className="px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap"
-                                style={active ? { background: 'rgba(193,18,31,0.2)', color: '#ff6b6b', border: '1px solid rgba(193,18,31,0.4)' } : { color: '#9ca3af' }}>
-                                {label}
-                            </Link>
-                        ))}
+                    <div className="hidden md:flex items-center gap-1 flex-shrink-0 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                        <Link href="/" className="px-3 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline flex items-center gap-1.5">
+                            <span>📸</span>
+                            <span>Attendance Kiosk</span>
+                        </Link>
+                        <Link href="/register" className="px-3 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-600/25 no-underline flex items-center gap-1.5">
+                            <span>📝</span>
+                            <span>Register</span>
+                        </Link>
+                        <div className="h-4 w-px bg-slate-700 mx-1"></div>
+                        <Link href="/dashboard" className="px-3 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline flex items-center gap-1.5">
+                            <span>📊</span>
+                            <span>Admin Portal 🔒</span>
+                        </Link>
                     </div>
-                    <Link href="/" className="flex items-center gap-1 text-xs text-gray-500 hover:text-white transition-colors px-3 py-1.5 rounded-lg flex-shrink-0"
-                        style={{ border: '1px solid rgba(255,255,255,0.08)' }}>
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        <span className="hidden sm:inline">Back</span>
+                    <Link href="/" className="flex items-center gap-1 text-xs text-slate-400 hover:text-white transition-colors px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 flex-shrink-0">
+                        <span>← Kiosk</span>
                     </Link>
                 </div>
             </nav>
 
-            {/* ── RED Hero Section ── */}
-            <div className="relative text-white overflow-hidden py-14 sm:py-20 px-4 sm:px-6"
-                style={{ background: 'linear-gradient(135deg, #6b0000 0%, #9b0d18 25%, #C1121F 55%, #e63946 80%, #ff6b6b 100%)' }}>
-                {/* Animated circles */}
+            {/* ── Blue-Emerald School Hero Section ── */}
+            <div className="relative text-white overflow-hidden py-12 sm:py-16 px-4 sm:px-6 bg-gradient-to-br from-[#0B192C] via-[#1E3E62] to-[#042f2e] border-b border-blue-500/20">
+                {/* Animated orbs */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-20"
-                        style={{ background: 'radial-gradient(circle, #ff0000, transparent)', animation: 'float 8s ease-in-out infinite' }} />
-                    <div className="absolute top-10 right-1/3 w-64 h-64 rounded-full opacity-15"
-                        style={{ background: 'radial-gradient(circle, #ff4444, transparent)', animation: 'float 10s ease-in-out infinite 2s' }} />
-                    <div className="absolute -bottom-10 right-10 w-96 h-96 rounded-full opacity-20"
-                        style={{ background: 'radial-gradient(circle, #c0392b, transparent)', animation: 'float 12s ease-in-out infinite 1s' }} />
-                    <div className="absolute inset-0 opacity-5" style={{
+                    <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full opacity-25 bg-blue-500 blur-3xl animate-float" />
+                    <div className="absolute top-10 right-1/3 w-80 h-80 rounded-full opacity-20 bg-emerald-400 blur-3xl" style={{ animation: 'float 10s ease-in-out infinite 2s' }} />
+                    <div className="absolute -bottom-16 right-10 w-96 h-96 rounded-full opacity-25 bg-teal-500 blur-3xl" style={{ animation: 'float 12s ease-in-out infinite 1s' }} />
+                    <div className="absolute inset-0 opacity-10" style={{
                         backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                        backgroundSize: '40px 40px'
+                        backgroundSize: '48px 48px'
                     }} />
                 </div>
 
@@ -327,54 +330,48 @@ export default function RegisterPage() {
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
                         {/* Left */}
                         <div className="flex-1 min-w-0" data-aos="fade-right">
-                            <div className="flex items-center gap-3 mb-5 flex-wrap" data-aos="fade-up" data-aos-delay="100">
-                                <div className="flex items-center gap-2 rounded-full px-4 py-1.5"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
-                                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px #4ade80' }} />
-                                    <span className="text-white text-xs font-semibold uppercase tracking-widest">Registration Portal</span>
+                            <div className="flex items-center gap-2.5 mb-4 flex-wrap" data-aos="fade-up" data-aos-delay="100">
+                                <div className="flex items-center gap-2 rounded-full px-4 py-1.5 bg-slate-950/60 border border-emerald-400/30 backdrop-blur-md">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-md shadow-emerald-400/80" />
+                                    <span className="text-emerald-300 text-xs font-bold uppercase tracking-wider">Student Onboarding</span>
                                 </div>
-                                <span className="text-xs font-bold px-3 py-1 rounded-full"
-                                    style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: '#fff', boxShadow: '0 4px 12px rgba(245,158,11,0.4)' }}>
-                                    by BENX
+                                <span className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-md shadow-blue-500/20">
+                                    Salvation Heritage
                                 </span>
                             </div>
                             <h1 className="font-black tracking-tight leading-none mb-4" data-aos="fade-up" data-aos-delay="200">
-                                <span className="block text-5xl sm:text-6xl lg:text-7xl text-white">Student</span>
-                                <span className="block text-5xl sm:text-6xl lg:text-7xl" style={{ color: 'rgba(255,200,200,0.9)' }}>Registration</span>
+                                <span className="block text-4xl sm:text-6xl lg:text-7xl text-white font-serif">Student</span>
+                                <span className="block text-4xl sm:text-6xl lg:text-7xl bg-gradient-to-r from-blue-300 via-emerald-200 to-white bg-clip-text text-transparent">Enrollment</span>
                             </h1>
-                            <p className="text-red-100 text-base sm:text-lg max-w-xl leading-relaxed mb-8" data-aos="fade-up" data-aos-delay="300">
-                                Complete your enrollment with advanced facial recognition. Secure, fast, and reliable — powered by Amazon Rekognition.
+                            <p className="text-slate-200 text-base sm:text-lg max-w-xl leading-relaxed mb-6 font-medium" data-aos="fade-up" data-aos-delay="300">
+                                Register your profile and biometric face token with Salvation Heritage security. Fast, contactless, and verified.
                             </p>
                             <div className="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400">
-                                {[{ icon: '🔐', t: 'Secure', d: 'Amazon Rekognition' }, { icon: '⚡', t: 'Fast', d: '3 Simple Steps' }, { icon: '✅', t: 'Verified', d: 'Duplicate Prevention' }].map((item, i) => (
-                                    <div key={i} className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 hover:scale-105 cursor-default"
-                                        style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
+                                {[{ icon: '🔐', t: 'Bank-Grade', d: 'Biometric AI' }, { icon: '⚡', t: 'Instant', d: '3 Simple Steps' }, { icon: '🛡️', t: 'Verified', d: 'Duplicate Guard' }].map((item, i) => (
+                                    <div key={i} className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md transition-all duration-300 hover:scale-105 cursor-default">
                                         <span className="text-xl">{item.icon}</span>
                                         <div>
                                             <p className="text-white font-bold text-sm leading-none">{item.t}</p>
-                                            <p className="text-red-200 text-xs">{item.d}</p>
+                                            <p className="text-emerald-300 text-xs font-medium mt-0.5">{item.d}</p>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Right — face.jpg - BIGGER & RESPONSIVE */}
+                        {/* Right Visual */}
                         <div className="flex-shrink-0 flex items-center justify-center lg:justify-end" data-aos="fade-left" data-aos-delay="200">
-                            <div className="relative group w-80 sm:w-96 md:w-[28rem] lg:w-[32rem]">
-                                <div className="absolute -inset-4 rounded-3xl opacity-60 blur-2xl"
-                                    style={{ background: 'radial-gradient(circle, rgba(193,18,31,0.6), transparent)', animation: 'glow-pulse 3s ease-in-out infinite' }} />
-                                <div className="relative rounded-3xl overflow-hidden"
-                                    style={{ border: '3px solid rgba(255,255,255,0.25)', boxShadow: '0 25px 60px rgba(0,0,0,0.5)' }}>
-                                    <img src="/gily.jpg" alt="Face Recognition"
+                            <div className="relative group w-80 sm:w-96 md:w-[26rem]">
+                                <div className="absolute -inset-4 rounded-3xl opacity-50 blur-2xl bg-gradient-to-r from-blue-600 via-emerald-500 to-teal-400" />
+                                <div className="relative rounded-3xl overflow-hidden border-2 border-white/30 shadow-2xl bg-slate-900">
+                                    <img src="/gily.jpg" alt="Salvation Heritage Student"
                                         className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
-                                        style={{ filter: 'brightness(1.1) contrast(1.05) saturate(1.1)', minHeight: '400px' }} />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                        style={{ filter: 'brightness(1.05) contrast(1.05)', minHeight: '340px' }} />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
                                     {['top-3 left-3 border-t-2 border-l-2 rounded-tl-lg','top-3 right-3 border-t-2 border-r-2 rounded-tr-lg','bottom-3 left-3 border-b-2 border-l-2 rounded-bl-lg','bottom-3 right-3 border-b-2 border-r-2 rounded-br-lg'].map((cls, i) => (
-                                        <div key={i} className={`absolute w-8 h-8 border-white/70 ${cls}`} />
+                                        <div key={i} className={`absolute w-8 h-8 border-emerald-400/90 ${cls}`} />
                                     ))}
-                                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center"
-                                        style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', border: '2px solid rgba(255,255,255,0.8)', boxShadow: '0 0 15px rgba(34,197,94,0.6)' }}>
+                                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-2xl flex items-center justify-center bg-gradient-to-tr from-emerald-600 to-teal-500 border border-white/60 shadow-lg shadow-emerald-500/40">
                                         <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
                                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                         </svg>
@@ -387,38 +384,38 @@ export default function RegisterPage() {
             </div>
 
             {/* ── Main Content ── */}
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                     {/* ── Left Sidebar ── */}
                     <div className="lg:col-span-1 space-y-4" data-aos="fade-right">
                         {/* Step indicator */}
-                        <div className="rounded-2xl p-5" style={cardStyle}>
-                            <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Progress</p>
+                        <div className="rounded-3xl p-6" style={cardStyle}>
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Enrollment Progress</p>
                             <StepIndicator current={step} />
                         </div>
 
                         {/* Guidelines */}
-                        <div className="rounded-2xl p-5" style={cardStyle}>
+                        <div className="rounded-3xl p-6" style={cardStyle}>
                             <div className="flex items-center gap-2 mb-4">
-                                <div className="w-6 h-6 rounded-lg flex items-center justify-center text-xs"
-                                    style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)' }}>📋</div>
+                                <div className="w-7 h-7 rounded-xl flex items-center justify-center text-xs font-black text-white bg-gradient-to-r from-blue-600 to-emerald-600">
+                                    SH
+                                </div>
                                 <p className="text-sm font-bold text-white">Guidelines</p>
                             </div>
                             <div className="space-y-3">
                                 {[
-                                    ['Student ID', 'Official Student ID, minimum 3 characters.'],
-                                    ['Full Name', 'Student\'s full name.'],
-                                    ['Class', 'School class from JSS1 to SS3.'],
-                                    ['Term', 'Active school term (First, Second, or Third Term).'],
-                                    ['One Face Policy', 'Each face can only register once. Duplicates are blocked automatically.'],
+                                    ['Student ID', 'Official ID (e.g. STU-1001), unique.'],
+                                    ['Full Name', 'Full legal student name.'],
+                                    ['Class', 'Select current grade: JSS1 to SS3.'],
+                                    ['Term', 'First, Second, or Third Term.'],
+                                    ['One Face Policy', 'Each student can only register once.'],
                                 ].map(([t, d]) => (
                                     <div key={t} className="flex gap-2.5 group">
-                                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5 group-hover:scale-125 transition-transform"
-                                            style={{ background: '#C1121F', boxShadow: '0 0 4px rgba(193,18,31,0.6)' }} />
+                                        <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1.5 bg-emerald-400 group-hover:scale-125 transition-transform shadow-sm shadow-emerald-400/80" />
                                         <div>
-                                            <p className="text-xs font-bold text-white group-hover:text-red-400 transition-colors">{t}</p>
-                                            <p className="text-xs text-gray-500 leading-relaxed">{d}</p>
+                                            <p className="text-xs font-bold text-white group-hover:text-blue-300 transition-colors">{t}</p>
+                                            <p className="text-xs text-slate-400 leading-relaxed">{d}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -427,13 +424,13 @@ export default function RegisterPage() {
 
                         {/* Face tips — step 2 only */}
                         {step === 2 && (
-                            <div className="rounded-2xl p-5" style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                                <p className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">📸 Capture Tips</p>
+                            <div className="rounded-3xl p-6 bg-emerald-950/30 border border-emerald-500/30">
+                                <p className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">📸 Biometric Tips</p>
                                 <div className="space-y-2">
-                                    {['Good lighting on your face','Look directly at the camera','Keep a neutral expression','Remove hats or glasses','Stay still during countdown'].map(tip => (
+                                    {['Good lighting on face','Look directly at camera','Neutral expression','Remove heavy glasses or hat','Stay still during snapshot'].map(tip => (
                                         <div key={tip} className="flex gap-2">
-                                            <span className="text-amber-500 text-xs mt-0.5 flex-shrink-0">✓</span>
-                                            <p className="text-xs text-amber-200">{tip}</p>
+                                            <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
+                                            <p className="text-xs text-emerald-200">{tip}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -443,22 +440,22 @@ export default function RegisterPage() {
 
                     {/* ── Right: Form / Camera / Success ── */}
                     <div className="lg:col-span-2" data-aos="fade-left" data-aos-delay="200">
-                        <div className="rounded-2xl overflow-hidden" style={cardStyle}>
+                        <div className="rounded-3xl overflow-hidden" style={cardStyle}>
 
                             {/* STEP 1 — Form */}
                             {step === 1 && (
                                 <>
-                                    <div className="px-5 sm:px-7 py-4 flex items-center gap-3"
-                                        style={{ borderBottom: '1px solid rgba(193,18,31,0.15)', background: 'rgba(193,18,31,0.05)' }}>
-                                        <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-black text-sm flex-shrink-0"
-                                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 12px rgba(193,18,31,0.5)' }}>1</div>
+                                    <div className="px-6 sm:px-8 py-5 flex items-center gap-3 border-b border-slate-800 bg-slate-950/40">
+                                        <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-white font-black text-sm flex-shrink-0 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30">
+                                            1
+                                        </div>
                                         <div>
-                                            <p className="font-bold text-white text-sm">Student Details</p>
-                                            <p className="text-xs text-gray-500">Fill in all required fields accurately</p>
+                                            <p className="font-bold text-white text-sm">Student Academic Information</p>
+                                            <p className="text-xs text-slate-400">Salvation Heritage Student Roster</p>
                                         </div>
                                     </div>
 
-                                    <div className="p-5 sm:p-7 space-y-5">
+                                    <div className="p-6 sm:p-8 space-y-5">
                                         {/* Student ID */}
                                         <InputField label="Student ID" required error={touched.student_id && errors.student_id} hint={!errors.student_id ? RULES.student_id.hint : ''}>
                                             <div className="relative">
@@ -468,51 +465,49 @@ export default function RegisterPage() {
                                                     className={`${inputCls('student_id')} pr-10`}
                                                     style={inputBg} />
                                                 <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm">
-                                                    {idStatus === 'checking'  && <span className="text-gray-400 animate-spin inline-block">⟳</span>}
-                                                    {idStatus === 'available' && <span style={{ color: '#22c55e' }}>✓</span>}
-                                                    {idStatus === 'taken'     && <span style={{ color: '#ff6b6b' }}>✕</span>}
+                                                    {idStatus === 'checking'  && <span className="text-slate-400 animate-spin inline-block">⟳</span>}
+                                                    {idStatus === 'available' && <span className="text-emerald-400 font-bold">✓</span>}
+                                                    {idStatus === 'taken'     && <span className="text-rose-400 font-bold">✕</span>}
                                                 </div>
                                             </div>
                                             {idStatus === 'taken' && (
-                                                <div className="mt-2 flex items-start gap-2 rounded-xl px-3 py-2.5"
-                                                    style={{ background: 'rgba(193,18,31,0.1)', border: '1px solid rgba(193,18,31,0.3)' }}>
-                                                    <span className="text-red-400 flex-shrink-0">🚫</span>
+                                                <div className="mt-2 flex items-start gap-2 rounded-2xl px-3.5 py-2.5 bg-rose-500/10 border border-rose-500/30">
+                                                    <span className="text-rose-400 flex-shrink-0">🚫</span>
                                                     <div>
-                                                        <p className="text-red-400 text-xs font-bold">Student ID Already Registered</p>
-                                                        {idOwner?.full_name && <p className="text-red-500 text-xs mt-0.5">Belongs to <span className="font-semibold">{idOwner.full_name}</span>{idOwner.department && ` (${idOwner.department})`}.</p>}
+                                                        <p className="text-rose-400 text-xs font-bold">Student ID Already Registered</p>
+                                                        {idOwner?.full_name && <p className="text-rose-300 text-xs mt-0.5">Belongs to <span className="font-semibold">{idOwner.full_name}</span>{idOwner.department && ` (${idOwner.department})`}.</p>}
                                                     </div>
                                                 </div>
                                             )}
                                             {idStatus === 'available' && formData.student_id.length >= 3 && (
-                                                <div className="mt-2 flex items-center gap-2 rounded-xl px-3 py-2"
-                                                    style={{ background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.3)' }}>
-                                                    <span style={{ color: '#22c55e' }}>✓</span>
-                                                    <p className="text-xs font-semibold" style={{ color: '#22c55e' }}>Student ID is available</p>
+                                                <div className="mt-2 flex items-center gap-2 rounded-2xl px-3.5 py-2 bg-emerald-500/10 border border-emerald-500/30">
+                                                    <span className="text-emerald-400 font-bold">✓</span>
+                                                    <p className="text-xs font-semibold text-emerald-400">Student ID is available</p>
                                                 </div>
                                             )}
                                         </InputField>
 
                                         {/* Full Name */}
-                                        <InputField label="Full Name" required error={touched.full_name && errors.full_name} hint={RULES.full_name.hint}>
+                                        <InputField label="Student Full Name" required error={touched.full_name && errors.full_name} hint={RULES.full_name.hint}>
                                             <input type="text" name="full_name" value={formData.full_name}
                                                 onChange={handleChange} onBlur={handleBlur}
-                                                placeholder="e.g. John Doe"
+                                                placeholder="e.g. Samuel Adebayo"
                                                 className={inputCls('full_name')} style={inputBg} />
                                         </InputField>
 
-                                        {/* Class (Department in DB) */}
-                                        <InputField label="Class" required error={touched.department && errors.department}>
+                                        {/* Class */}
+                                        <InputField label="Class / Grade" required error={touched.department && errors.department}>
                                             <select name="department" value={formData.department}
                                                 onChange={handleChange} onBlur={handleBlur}
                                                 className={inputCls('department')} style={inputBg}>
-                                                <option value="">— Select Class —</option>
+                                                <option value="">— Select Class (JSS1 to SS3) —</option>
                                                 {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
                                             </select>
                                         </InputField>
 
-                                        {/* Term (Semester in DB) */}
-                                        <InputField label="Current Term" required error={touched.semester && errors.semester}>
-                                            <div className="grid grid-cols-3 gap-2">
+                                        {/* Term */}
+                                        <InputField label="Academic Term" required error={touched.semester && errors.semester}>
+                                            <div className="grid grid-cols-3 gap-2.5">
                                                 {[
                                                     { value: 1, label: 'First Term' },
                                                     { value: 2, label: 'Second Term' },
@@ -520,30 +515,31 @@ export default function RegisterPage() {
                                                 ].map(t => (
                                                     <button key={t.value} type="button"
                                                         onClick={() => { setFormData(p => ({ ...p, semester: t.value })); setTouched(p => ({ ...p, semester: true })); setErrors(p => ({ ...p, semester: '' })); }}
-                                                        className="py-2.5 rounded-xl text-xs font-black transition-all duration-150 hover:scale-105 active:scale-95"
-                                                        style={Number(formData.semester) === t.value
-                                                            ? { background: 'linear-gradient(135deg, #C1121F, #e63946)', color: '#fff', boxShadow: '0 0 12px rgba(193,18,31,0.5)' }
-                                                            : { background: 'rgba(255,255,255,0.05)', color: '#9ca3af', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                                        className={`py-3 rounded-2xl text-xs font-black transition-all duration-150 hover:scale-105 active:scale-95 ${
+                                                            Number(formData.semester) === t.value
+                                                                ? 'bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-lg shadow-blue-500/30'
+                                                                : 'bg-slate-950/80 text-slate-400 border border-slate-700 hover:bg-slate-800'
+                                                        }`}>
                                                         {t.label}
                                                     </button>
                                                 ))}
                                             </div>
-                                            {formData.semester && <p className="text-xs text-gray-500 mt-1.5">Selected: {formData.semester === 1 ? 'First Term' : formData.semester === 2 ? 'Second Term' : 'Third Term'}</p>}
+                                            {formData.semester && <p className="text-xs text-emerald-400 mt-1.5 font-medium">Selected: {formData.semester === 1 ? 'First Term' : formData.semester === 2 ? 'Second Term' : 'Third Term'}</p>}
                                         </InputField>
 
                                         {/* Preview */}
                                         {formData.student_id && formData.full_name && (
-                                            <div className="rounded-xl p-4" style={{ background: 'rgba(193,18,31,0.08)', border: '1px solid rgba(193,18,31,0.2)' }}>
-                                                <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: '#ff6b6b' }}>Preview</p>
+                                            <div className="rounded-2xl p-4 bg-blue-500/10 border border-blue-500/25">
+                                                <p className="text-xs font-bold uppercase tracking-widest mb-2 text-blue-300">Enrollment Preview</p>
                                                 <div className="grid grid-cols-2 gap-2 text-xs">
                                                     {[
-                                                        ['ID', formData.student_id],
-                                                        ['Name', formData.full_name],
+                                                        ['Student ID', formData.student_id],
+                                                        ['Full Name', formData.full_name],
                                                         ['Class', formData.department || '—'],
                                                         ['Term', formData.semester ? (formData.semester === 1 ? 'First Term' : formData.semester === 2 ? 'Second Term' : 'Third Term') : '—']
                                                     ].map(([k, v]) => (
                                                         <div key={k}>
-                                                            <span className="text-gray-500">{k}: </span>
+                                                            <span className="text-slate-400">{k}: </span>
                                                             <span className="font-semibold text-white truncate">{v}</span>
                                                         </div>
                                                     ))}
@@ -552,8 +548,7 @@ export default function RegisterPage() {
                                         )}
 
                                         <button onClick={handleNext}
-                                            className="w-full py-3.5 rounded-xl text-white font-black text-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-                                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 20px rgba(193,18,31,0.4)' }}>
+                                            className="w-full py-4 rounded-2xl text-white font-black text-sm bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-xl shadow-blue-600/30 active:scale-95 transition-all">
                                             Continue to Face Capture →
                                         </button>
                                     </div>
@@ -563,73 +558,69 @@ export default function RegisterPage() {
                             {/* STEP 2 — Camera */}
                             {step === 2 && (
                                 <>
-                                    <div className="px-5 sm:px-7 py-4 flex items-center justify-between"
-                                        style={{ borderBottom: '1px solid rgba(193,18,31,0.15)', background: 'rgba(193,18,31,0.05)' }}>
+                                    <div className="px-6 sm:px-8 py-5 flex items-center justify-between border-b border-slate-800 bg-slate-950/40">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-black text-sm flex-shrink-0"
-                                                style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 12px rgba(193,18,31,0.5)' }}>2</div>
+                                            <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-white font-black text-sm flex-shrink-0 bg-gradient-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-600/30">
+                                                2
+                                            </div>
                                             <div>
-                                                <p className="font-bold text-white text-sm">Face Capture</p>
-                                                <p className="text-xs text-gray-500">Registering: <span className="text-gray-300 font-semibold">{formData.full_name}</span></p>
+                                                <p className="font-bold text-white text-sm">Biometric Face Enrollment</p>
+                                                <p className="text-xs text-slate-400">Student: <span className="text-emerald-300 font-semibold">{formData.full_name}</span></p>
                                             </div>
                                         </div>
                                         <button onClick={() => setStep(1)}
-                                            className="text-xs text-gray-500 hover:text-white transition-colors px-3 py-1.5 rounded-lg"
-                                            style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-                                            ← Edit
+                                            className="text-xs text-slate-400 hover:text-white transition-colors px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700">
+                                            ← Edit Details
                                         </button>
                                     </div>
 
-                                    <div className="px-5 sm:px-7 mt-5 space-y-4">
+                                    <div className="px-6 sm:px-8 mt-5 space-y-4">
                                         {/* Face reference */}
-                                        <div className="rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center group"
-                                            style={{ background: 'rgba(193,18,31,0.08)', border: '1px solid rgba(193,18,31,0.2)' }}>
-                                            <div className="w-full sm:w-24 flex-shrink-0 rounded-lg overflow-hidden"
-                                                style={{ border: '1px solid rgba(255,255,255,0.15)' }}>
-                                                <img src="/face.jpg" alt="Reference"
+                                        <div className="rounded-2xl p-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center group bg-slate-950/80 border border-blue-500/20">
+                                            <div className="w-full sm:w-24 flex-shrink-0 rounded-xl overflow-hidden border border-white/20">
+                                                <img src="/face.jpg" alt="Reference Face"
                                                     className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
-                                                    style={{ filter: 'brightness(1.1) contrast(1.1)' }} />
+                                                    style={{ filter: 'brightness(1.05) contrast(1.05)' }} />
                                             </div>
                                             <div>
-                                                <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: '#ff6b6b' }}>📸 Face Reference</p>
-                                                <p className="text-sm text-white font-semibold mb-1">Match your face to this reference</p>
-                                                <p className="text-xs text-gray-500">Good lighting, face centered, neutral expression.</p>
+                                                <p className="text-xs font-bold uppercase tracking-widest mb-1 text-emerald-400">📸 Reference Standard</p>
+                                                <p className="text-sm text-white font-bold mb-1">Center your face in good light</p>
+                                                <p className="text-xs text-slate-400">Salvation Heritage AI scans facial landmarks for accurate attendance.</p>
                                             </div>
                                         </div>
 
                                         {/* Student summary */}
-                                        <div className="rounded-xl p-4 grid grid-cols-3 gap-3 text-xs"
-                                            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                                        <div className="rounded-2xl p-4 grid grid-cols-3 gap-3 text-xs bg-slate-950/60 border border-slate-800">
                                             {[
                                                 ['Student ID', formData.student_id],
                                                 ['Class', formData.department],
                                                 ['Term', formData.semester === 1 ? 'First Term' : formData.semester === 2 ? 'Second Term' : 'Third Term']
                                             ].map(([k, v]) => (
                                                 <div key={k}>
-                                                    <p className="text-gray-500 font-medium">{k}</p>
+                                                    <p className="text-slate-400 font-medium">{k}</p>
                                                     <p className="font-bold text-white truncate">{v}</p>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
 
-                                    <div className="p-5 sm:p-7">
-                                        <CameraCapture onCapture={handleCapture} isLoading={isLoading} onClose={() => setStep(1)} buttonText="Register Student" />
+                                    <div className="p-6 sm:p-8">
+                                        <CameraCapture onCapture={handleCapture} isLoading={isLoading} onClose={() => setStep(1)} buttonText="Save Student & Face Biometrics" />
                                     </div>
                                 </>
                             )}
 
                             {/* STEP 3 — Success */}
                             {step === 3 && registered && (
-                                <div className="p-8 sm:p-10 flex flex-col items-center text-center">
-                                    <div className="w-20 h-20 rounded-full flex items-center justify-center text-4xl mb-5"
-                                        style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', boxShadow: '0 0 30px rgba(34,197,94,0.5)' }}>✓</div>
-                                    <h2 className="text-2xl font-black text-white mb-1">Registration Successful!</h2>
-                                    <p className="text-gray-500 text-sm mb-6">Student enrolled in the attendance system.</p>
+                                <div className="p-8 sm:p-12 flex flex-col items-center text-center">
+                                    <div className="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl mb-5 bg-gradient-to-tr from-emerald-600 to-teal-500 shadow-2xl shadow-emerald-500/40 text-white font-black">
+                                        ✓
+                                    </div>
+                                    <h2 className="text-2xl font-black text-white mb-1">Registration Complete!</h2>
+                                    <p className="text-slate-400 text-sm mb-6">Student enrolled in Salvation Heritage attendance database.</p>
 
-                                    <div className="w-full rounded-xl p-5 mb-6 text-left"
-                                        style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                                        <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Registered Details</p>
+                                    <div className="w-full rounded-2xl p-5 mb-6 text-left bg-slate-950/80 border border-slate-800">
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Enrolled Student Card</p>
                                         <div className="grid grid-cols-2 gap-3">
                                             {[
                                                 ['Full Name', registered.full_name],
@@ -637,9 +628,9 @@ export default function RegisterPage() {
                                                 ['Class', registered.department],
                                                 ['Term', registered.semester === 1 ? 'First Term' : registered.semester === 2 ? 'Second Term' : 'Third Term']
                                             ].map(([k, v]) => (
-                                                <div key={k} className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                                                    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">{k}</p>
-                                                    <p className="text-sm font-semibold text-white truncate">{v}</p>
+                                                <div key={k} className="rounded-xl p-3 bg-slate-900 border border-slate-800">
+                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{k}</p>
+                                                    <p className="text-sm font-bold text-white truncate">{v}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -647,14 +638,12 @@ export default function RegisterPage() {
 
                                     <div className="flex flex-col sm:flex-row gap-3 w-full">
                                         <button onClick={handleReset}
-                                            className="flex-1 py-3 rounded-xl font-bold text-sm transition-all hover:scale-[1.02]"
-                                            style={{ border: '1px solid rgba(193,18,31,0.4)', color: '#ff6b6b', background: 'rgba(193,18,31,0.1)' }}>
-                                            Register Another
+                                            className="flex-1 py-3.5 rounded-2xl font-bold text-sm bg-slate-900 text-emerald-400 border border-emerald-500/30 hover:bg-slate-800 transition-all">
+                                            + Register Another
                                         </button>
-                                        <Link href="/dashboard"
-                                            className="flex-1 py-3 rounded-xl font-bold text-sm text-white text-center transition-all hover:scale-[1.02]"
-                                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 16px rgba(193,18,31,0.4)' }}>
-                                            View Dashboard
+                                        <Link href="/"
+                                            className="flex-1 py-3.5 rounded-2xl font-bold text-sm text-white text-center bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-lg shadow-blue-600/30 transition-all no-underline">
+                                            Go to Attendance Kiosk →
                                         </Link>
                                     </div>
                                 </div>
@@ -665,15 +654,16 @@ export default function RegisterPage() {
             </div>
 
             {/* ── Footer ── */}
-            <footer className="mt-8 py-4" style={{ borderTop: '1px solid rgba(193,18,31,0.15)', background: 'rgba(0,0,0,0.5)' }}>
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-600">
+            <footer className="mt-12 py-6 border-t border-slate-800/80 bg-slate-950 text-slate-500 text-xs">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px] font-bold"
-                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)' }}>FA</div>
-                        <span className="font-medium text-gray-500">FaceAttend by BENX</span>
+                        <div className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[10px] font-black bg-gradient-to-tr from-blue-700 to-emerald-500">
+                            SH
+                        </div>
+                        <span className="font-semibold text-slate-300">Salvation Heritage Biometrics</span>
                     </div>
-                    <span>All fields marked <span style={{ color: '#ff6b6b' }} className="font-bold">*</span> are required</span>
-                    <Link href="/" className="hover:text-red-400 transition-colors">← Back to Home</Link>
+                    <span>All fields marked <span className="text-rose-400 font-bold">*</span> are required</span>
+                    <Link href="/" className="text-blue-400 hover:text-blue-300 transition-colors no-underline">← Back to Kiosk</Link>
                 </div>
             </footer>
 

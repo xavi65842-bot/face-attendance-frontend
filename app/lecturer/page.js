@@ -89,160 +89,116 @@ function LoginScreen({ onLogin }) {
     };
 
     return (
-        <div className="min-h-screen" style={{ background: '#0a0a0a', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+        <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
             <style>{`
-                @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-                @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 20px rgba(193,18,31,0.4); } 50% { box-shadow: 0 0 40px rgba(193,18,31,0.8), 0 0 60px rgba(193,18,31,0.3); } }
+                @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
+                @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 25px rgba(37,99,235,0.3); } 50% { box-shadow: 0 0 50px rgba(16,185,129,0.5); } }
             `}</style>
 
             <Toaster position="top-center" toastOptions={{
-                style: { borderRadius: 12, fontSize: 13, fontWeight: 500, background: '#1a0a0a', color: '#fff', border: '1px solid rgba(193,18,31,0.3)' },
-                success: { iconTheme: { primary: '#C1121F', secondary: '#fff' } },
+                style: { borderRadius: 14, fontSize: 13, fontWeight: 600, background: '#0f172a', color: '#fff', border: '1px solid rgba(59,130,246,0.3)' },
+                success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
             }} />
 
+            {/* Top School Banner */}
+            <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-center gap-2">
+                <span>🏛️</span>
+                <span>Salvation Heritage Schools • Faculty & Instructor Portal</span>
+            </div>
+
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 w-full" style={{ background: 'rgba(10,10,10,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 4px 30px rgba(0,0,0,0.5)' }}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+            <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-3 flex-shrink-0">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0"
-                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 20px rgba(193,18,31,0.5)' }}>
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
-                            </svg>
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
+                            SH
                         </div>
                         <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                                <span className="font-bold text-white text-sm sm:text-base tracking-tight">Face Attendance</span>
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 hidden sm:inline"
-                                    style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: '#fff' }}>by BENX</span>
+                                <span className="font-black text-white text-base sm:text-lg">Salvation Heritage</span>
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                    Faculty
+                                </span>
                             </div>
-                            <span className="hidden md:block text-gray-500 text-xs">Lecturer Portal</span>
+                            <span className="hidden md:block text-slate-400 text-xs">Instructor Session Terminal</span>
                         </div>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-1">
-                        {[['/', 'Home'], ['/dashboard', 'Dashboard'], ['/register', 'Register'], ['/students', 'Students'], ['/lecturer', 'Lecturer', true]].map(([href, label, active]) => (
-                            <Link key={href} href={href}
-                                className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                                style={active
-                                    ? { background: 'rgba(193,18,31,0.2)', color: '#ff6b6b', border: '1px solid rgba(193,18,31,0.4)' }
-                                    : { color: '#9ca3af' }}>
-                                {label}
-                            </Link>
-                        ))}
+                    <div className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                        <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            Kiosk
+                        </Link>
+                        <Link href="/dashboard" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            Dashboard
+                        </Link>
+                        <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            Students
+                        </Link>
+                        <Link href="/lecturer" className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
+                            Faculty
+                        </Link>
+                        <Link href="/register" className="px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/40 transition-all no-underline">
+                            + Register
+                        </Link>
                     </div>
                 </div>
             </nav>
 
-            {/* RED Hero Section with BIG Image */}
-            <div className="relative text-white overflow-hidden py-16 sm:py-20 px-4 sm:px-6"
-                style={{ background: 'linear-gradient(135deg, #6b0000 0%, #9b0d18 25%, #C1121F 55%, #e63946 80%, #ff6b6b 100%)' }}>
-
-                {/* Animated circles background */}
+            {/* Blue-Emerald Hero Section */}
+            <div className="relative text-white overflow-hidden py-12 sm:py-16 px-4 sm:px-6 bg-gradient-to-br from-[#0B192C] via-[#1E3E62] to-[#042f2e] border-b border-blue-500/20">
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-20"
-                        style={{ background: 'radial-gradient(circle, #ff0000, transparent)', animation: 'float 8s ease-in-out infinite' }} />
-                    <div className="absolute top-10 right-1/3 w-64 h-64 rounded-full opacity-15"
-                        style={{ background: 'radial-gradient(circle, #ff4444, transparent)', animation: 'float 10s ease-in-out infinite 2s' }} />
-                    <div className="absolute -bottom-10 right-10 w-96 h-96 rounded-full opacity-20"
-                        style={{ background: 'radial-gradient(circle, #c0392b, transparent)', animation: 'float 12s ease-in-out infinite 1s' }} />
-                    <div className="absolute bottom-0 left-1/3 w-48 h-48 rounded-full opacity-10"
-                        style={{ background: 'radial-gradient(circle, #ff6b6b, transparent)', animation: 'float 9s ease-in-out infinite 3s' }} />
-                    {/* Grid overlay */}
-                    <div className="absolute inset-0 opacity-5" style={{
-                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                        backgroundSize: '40px 40px'
-                    }} />
+                    <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full opacity-25 bg-blue-500 blur-3xl animate-float" />
+                    <div className="absolute top-10 right-1/3 w-80 h-80 rounded-full opacity-20 bg-emerald-400 blur-3xl" style={{ animation: 'float 10s ease-in-out infinite 2s' }} />
                 </div>
 
                 <div className="max-w-7xl mx-auto relative z-10">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-
-                        {/* Left — text */}
                         <div className="flex-1 min-w-0" data-aos="fade-right">
-                            <div className="flex items-center gap-3 mb-5 flex-wrap" data-aos="fade-up" data-aos-delay="100">
-                                <div className="flex items-center gap-2 rounded-full px-4 py-1.5"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
-                                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px #4ade80' }}></div>
-                                    <span className="text-white text-xs font-semibold uppercase tracking-widest">Lecturer Portal</span>
+                            <div className="flex items-center gap-2.5 mb-4 flex-wrap">
+                                <div className="flex items-center gap-2 rounded-full px-4 py-1.5 bg-slate-950/60 border border-emerald-400/30 backdrop-blur-md">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-md shadow-emerald-400/80"></div>
+                                    <span className="text-emerald-300 text-xs font-bold uppercase tracking-wider">Faculty Portal</span>
                                 </div>
-                                <span className="text-xs font-bold px-3 py-1 rounded-full"
-                                    style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: '#fff', boxShadow: '0 4px 12px rgba(245,158,11,0.4)' }}>
-                                    by BENX
+                                <span className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-md shadow-blue-500/20">
+                                    Salvation Heritage
                                 </span>
                             </div>
 
-                            <h1 className="font-black tracking-tight leading-none mb-4" data-aos="fade-up" data-aos-delay="200">
-                                <span className="block text-5xl sm:text-6xl lg:text-7xl text-white">Lecturer</span>
-                                <span className="block text-5xl sm:text-6xl lg:text-7xl" style={{ color: 'rgba(255,200,200,0.9)' }}>Sign In</span>
+                            <h1 className="font-black tracking-tight leading-none mb-4">
+                                <span className="block text-4xl sm:text-6xl lg:text-7xl text-white font-serif">Faculty</span>
+                                <span className="block text-4xl sm:text-6xl lg:text-7xl bg-gradient-to-r from-blue-300 via-emerald-200 to-white bg-clip-text text-transparent">Sign In</span>
                             </h1>
 
-                            <p className="text-red-100 text-base sm:text-lg max-w-xl leading-relaxed mb-8" data-aos="fade-up" data-aos-delay="300">
-                                Enter your pre-assigned Lecturer ID to access the session control panel and manage attendance.
+                            <p className="text-slate-200 text-base sm:text-lg max-w-xl leading-relaxed mb-6 font-medium">
+                                Sign in with your official Salvation Heritage Instructor ID to manage classroom attendance sessions.
                             </p>
 
-                            {/* Info cards */}
-                            <div className="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400">
-                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 hover:scale-105 cursor-default"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
+                            <div className="flex flex-wrap gap-3">
+                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md">
                                     <span className="text-2xl">🎓</span>
                                     <div>
                                         <p className="text-white font-black text-xl leading-none">LEC001-020</p>
-                                        <p className="text-red-200 text-xs">Pre-assigned IDs</p>
+                                        <p className="text-emerald-300 text-xs mt-0.5">Faculty IDs</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 hover:scale-105 cursor-default"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
+                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md">
                                     <span className="text-2xl">⏱️</span>
                                     <div>
-                                        <p className="text-white font-black text-xl leading-none">Session Control</p>
-                                        <p className="text-red-200 text-xs">Start & Stop</p>
+                                        <p className="text-white font-black text-xl leading-none">Live Kiosk Control</p>
+                                        <p className="text-emerald-300 text-xs mt-0.5">Automated Attendance</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Right — lecturer.jpg with premium frame - BIG & RESPONSIVE */}
                         <div className="flex-shrink-0 flex items-center justify-center lg:justify-end" data-aos="fade-left" data-aos-delay="200">
-                            <div className="relative group w-80 sm:w-96 md:w-[28rem] lg:w-[32rem]">
-                                {/* Outer glow */}
-                                <div className="absolute -inset-4 rounded-3xl opacity-60 blur-2xl"
-                                    style={{ background: 'radial-gradient(circle, rgba(193,18,31,0.6), transparent)', animation: 'glow-pulse 3s ease-in-out infinite' }} />
-
-                                {/* Image card */}
-                                <div className="relative rounded-3xl overflow-hidden"
-                                    style={{ border: '3px solid rgba(255,255,255,0.25)', boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
-                                    <img src="/main.jpg" alt="Lecturer Portal"
+                            <div className="relative group w-80 sm:w-96 md:w-[26rem]">
+                                <div className="absolute -inset-4 rounded-3xl opacity-50 blur-2xl bg-gradient-to-r from-blue-600 via-emerald-500 to-teal-400" />
+                                <div className="relative rounded-3xl overflow-hidden border-2 border-white/30 shadow-2xl bg-slate-900">
+                                    <img src="/main.jpg" alt="Salvation Heritage Faculty"
                                         className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
-                                        style={{ filter: 'brightness(1.1) contrast(1.05) saturate(1.1)', minHeight: '400px' }} />
-
-                                    {/* Bottom gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                                    {/* Corner brackets */}
-                                    {[
-                                        'top-3 left-3 border-t-2 border-l-2 rounded-tl-lg',
-                                        'top-3 right-3 border-t-2 border-r-2 rounded-tr-lg',
-                                        'bottom-3 left-3 border-b-2 border-l-2 rounded-bl-lg',
-                                        'bottom-3 right-3 border-b-2 border-r-2 rounded-br-lg',
-                                    ].map((cls, i) => (
-                                        <div key={i} className={`absolute w-8 h-8 border-white/70 ${cls}`} />
-                                    ))}
-
-                                    {/* Verified badge */}
-                                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center"
-                                        style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', border: '2px solid rgba(255,255,255,0.8)', boxShadow: '0 0 15px rgba(34,197,94,0.6)' }}>
-                                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-
-                                    {/* Secure badge */}
-                                    <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full px-2.5 py-1"
-                                        style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                                        <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                                        <span className="text-white text-[10px] font-semibold">SECURE</span>
-                                    </div>
+                                        style={{ filter: 'brightness(1.05) contrast(1.05)', minHeight: '320px' }} />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
                                 </div>
                             </div>
                         </div>
@@ -253,19 +209,20 @@ function LoginScreen({ onLogin }) {
             {/* Login Card */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
                 <div className="max-w-md mx-auto" data-aos="zoom-in" data-aos-delay="300">
-                    <div className="rounded-3xl overflow-hidden" style={{ background: 'linear-gradient(145deg, #111111, #0f0f0f)', border: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
-                        <div className="px-6 py-5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(193,18,31,0.2)' }}>
-                            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg"
-                                style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>🎓</div>
+                    <div className="rounded-3xl overflow-hidden bg-slate-900 border border-blue-500/30 shadow-2xl">
+                        <div className="px-6 py-5 flex items-center gap-3 border-b border-slate-800 bg-slate-950/50">
+                            <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-white text-lg bg-gradient-to-r from-blue-600 to-emerald-600">
+                                🎓
+                            </div>
                             <div>
-                                <p className="font-bold text-white">Lecturer Login</p>
-                                <p className="text-xs text-gray-400">IDs are pre-assigned (LEC001–LEC020)</p>
+                                <p className="font-bold text-white">Faculty Authentication</p>
+                                <p className="text-xs text-slate-400">Salvation Heritage Instructor (e.g. LEC001)</p>
                             </div>
                         </div>
                         <form onSubmit={handleSubmit} className="p-6 space-y-5">
                             <div>
-                                <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">
-                                    Lecturer ID <span className="text-red-500">*</span>
+                                <label className="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                                    Lecturer ID <span className="text-emerald-400">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -273,30 +230,23 @@ function LoginScreen({ onLogin }) {
                                     onChange={e => { setLecturerId(e.target.value); setError(''); }}
                                     placeholder="e.g. LEC001"
                                     autoFocus
-                                    className="w-full px-4 py-3 rounded-xl border text-sm font-mono tracking-widest focus:outline-none focus:ring-2 transition-all uppercase"
-                                    style={{ 
-                                        background: 'rgba(255,255,255,0.05)', 
-                                        border: '1px solid rgba(193,18,31,0.2)', 
-                                        color: '#fff',
-                                        focusRing: 'rgba(193,18,31,0.3)'
-                                    }}
+                                    className="w-full px-4 py-3 rounded-2xl border text-sm font-mono tracking-widest focus:outline-none focus:border-emerald-500 bg-slate-950 border-slate-700 text-white transition-all uppercase"
                                 />
                                 {error && (
-                                    <div className="mt-2 flex items-start gap-2 rounded-xl px-3 py-2.5" style={{ background: 'rgba(220,38,38,0.1)', border: '1px solid rgba(220,38,38,0.3)' }}>
-                                        <span className="text-red-500 flex-shrink-0 text-sm">⚠</span>
-                                        <p className="text-red-400 text-xs font-medium">{error}</p>
+                                    <div className="mt-2 flex items-start gap-2 rounded-2xl px-3 py-2.5 bg-rose-500/10 border border-rose-500/30">
+                                        <span className="text-rose-400 flex-shrink-0 text-sm">⚠</span>
+                                        <p className="text-rose-400 text-xs font-medium">{error}</p>
                                     </div>
                                 )}
                             </div>
                             <button type="submit" disabled={loading}
-                                className="w-full py-3.5 rounded-2xl text-white font-bold text-sm transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                                style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)', boxShadow: '0 4px 20px rgba(193,18,31,0.35)' }}>
-                                {loading ? '⏳ Verifying...' : '🔐 Sign In'}
+                                className="w-full py-4 rounded-2xl text-white font-black text-sm bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-xl shadow-blue-600/30 active:scale-95 transition-all disabled:opacity-50">
+                                {loading ? '⏳ Verifying...' : '🔐 Sign In to Session Control'}
                             </button>
                         </form>
                     </div>
-                    <p className="text-center text-xs text-gray-500 mt-4">
-                        Don&apos;t know your ID? Contact your administrator.
+                    <p className="text-center text-xs text-slate-500 mt-4">
+                        Salvation Heritage Faculty Terminal • Test IDs: LEC001 - LEC020
                     </p>
                 </div>
             </div>
@@ -347,10 +297,10 @@ function SessionPanel({ lecturer, onLogout }) {
     const pollRef = useRef(null);
 
     const inputCls = (field) =>
-        `w-full px-4 py-2.5 rounded-xl border text-sm transition-all focus:outline-none focus:ring-2 ${
+        `w-full px-4 py-3 rounded-2xl border text-sm transition-all focus:outline-none ${
             errors[field]
-                ? 'border-red-500 focus:ring-red-500/20 bg-red-500/5 text-red-400'
-                : 'border-gray-700 focus:ring-red-500/20 focus:border-red-500 bg-white/5 text-white'
+                ? 'border-rose-500 bg-rose-500/10 text-rose-300'
+                : 'border-slate-700 focus:border-emerald-500 bg-slate-950 text-white'
         }`;
 
     // Restore active session on mount
@@ -402,7 +352,6 @@ function SessionPanel({ lecturer, onLogout }) {
         if (!form.course_code.trim())   e.course_code = 'Required';
         if (!form.course_name.trim())   e.course_name = 'Required';
         if (!form.end_time)             e.end_time    = 'Required';
-        // Removed future time validation - lecturers can set any time
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -425,11 +374,11 @@ function SessionPanel({ lecturer, onLogout }) {
                 setActiveSession(sessionData);
                 setMarkedCount(0);
                 sessionStorage.setItem('fa_session', JSON.stringify(sessionData));
-                toast.success('Session started! Students can now mark attendance.', { duration: 5000 });
+                toast.success('Session started! Students can now scan attendance.', { duration: 5000 });
             } else {
                 toast.error(data.message || 'Failed to start session.', {
                     duration: 8000, icon: '🚫',
-                    style: { border: '1px solid #fca5a5', background: '#fff1f2', maxWidth: 420 },
+                    style: { border: '1px solid #fca5a5', background: '#0f172a', color: '#fff', maxWidth: 420 },
                 });
             }
         } catch { toast.error('Network error. Check if PHP backend is running.'); }
@@ -453,175 +402,129 @@ function SessionPanel({ lecturer, onLogout }) {
     };
 
     return (
-        <div className="min-h-screen" style={{ background: '#0a0a0a', fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+        <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
             <AOSInit />
             <style>{`
-                @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
-                @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 20px rgba(193,18,31,0.4); } 50% { box-shadow: 0 0 40px rgba(193,18,31,0.8), 0 0 60px rgba(193,18,31,0.3); } }
+                @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-14px); } }
+                @keyframes glow-pulse { 0%, 100% { box-shadow: 0 0 25px rgba(37,99,235,0.3); } 50% { box-shadow: 0 0 50px rgba(16,185,129,0.5); } }
+                select option { background-color: #0f172a !important; color: #fff !important; }
+                select { color-scheme: dark; }
             `}</style>
 
             <Toaster position="top-center" toastOptions={{
-                style: { borderRadius: 12, fontSize: 13, fontWeight: 500, background: '#1a0a0a', color: '#fff', border: '1px solid rgba(193,18,31,0.3)' },
-                success: { iconTheme: { primary: '#C1121F', secondary: '#fff' } },
+                style: { borderRadius: 14, fontSize: 13, fontWeight: 600, background: '#0f172a', color: '#fff', border: '1px solid rgba(59,130,246,0.3)' },
+                success: { iconTheme: { primary: '#10b981', secondary: '#fff' } },
             }} />
 
+            {/* Top School Banner */}
+            <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-emerald-950 text-white text-[11px] py-1.5 px-4 text-center font-semibold tracking-wide border-b border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <span>🏛️</span>
+                    <span>Salvation Heritage Schools • Faculty Terminal</span>
+                </div>
+                <div className="text-emerald-400 font-bold text-[10px]">
+                    Logged in as {lecturer.full_name}
+                </div>
+            </div>
+
             {/* Navbar */}
-            <nav className="sticky top-0 z-50 w-full" style={{ background: 'rgba(10,10,10,0.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 4px 30px rgba(0,0,0,0.5)' }}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3 flex-shrink-0">
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg flex-shrink-0"
-                            style={{ background: 'linear-gradient(135deg, #C1121F, #e63946)', boxShadow: '0 0 20px rgba(193,18,31,0.5)' }}>
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
-                            </svg>
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
+                            SH
                         </div>
                         <div className="min-w-0">
                             <div className="flex items-center gap-2">
-                                <span className="font-bold text-white text-sm sm:text-base tracking-tight">Face Attendance</span>
-                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 hidden sm:inline"
-                                    style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: '#fff' }}>by BENX</span>
+                                <span className="font-black text-white text-base sm:text-lg">Salvation Heritage</span>
+                                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                    Faculty
+                                </span>
                             </div>
-                            <span className="hidden md:block text-gray-500 text-xs">Lecturer Session Control</span>
+                            <span className="hidden md:block text-slate-400 text-xs">Instructor Session Terminal</span>
                         </div>
                     </div>
 
-                    <div className="hidden md:flex items-center gap-1">
-                        {[['/', 'Home'], ['/dashboard', 'Dashboard'], ['/register', 'Register'], ['/students', 'Students'], ['/lecturer', 'Lecturer', true]].map(([href, label, active]) => (
-                            <Link key={href} href={href}
-                                className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                                style={active
-                                    ? { background: 'rgba(193,18,31,0.2)', color: '#ff6b6b', border: '1px solid rgba(193,18,31,0.4)' }
-                                    : { color: '#9ca3af' }}>
-                                {label}
-                            </Link>
-                        ))}
+                    <div className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                        <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            Kiosk
+                        </Link>
+                        <Link href="/dashboard" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            Dashboard
+                        </Link>
+                        <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
+                            Students
+                        </Link>
+                        <Link href="/lecturer" className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
+                            Faculty
+                        </Link>
                     </div>
 
                     {/* Lecturer identity + logout */}
                     <div className="flex items-center gap-3">
                         <div className="hidden sm:block text-right">
                             <p className="text-xs font-bold text-white">{lecturer.full_name}</p>
-                            <p className="text-[10px] text-gray-400 font-mono">{lecturer.lecturer_id}</p>
+                            <p className="text-[10px] text-emerald-400 font-mono">{lecturer.lecturer_id}</p>
                         </div>
                         <button onClick={onLogout}
-                            className="px-3 py-1.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105"
-                            style={{ background: 'rgba(193,18,31,0.2)', border: '1px solid rgba(193,18,31,0.3)' }}>
+                            className="px-3.5 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all">
                             Sign Out
                         </button>
                     </div>
                 </div>
             </nav>
 
-            {/* Hero with clock.jpg */}
-            <div className="relative text-white overflow-hidden py-16 sm:py-20 px-4 sm:px-6"
-                style={{ background: 'linear-gradient(135deg, #6b0000 0%, #9b0d18 25%, #C1121F 55%, #e63946 80%, #ff6b6b 100%)' }}>
-
-                {/* Animated circles background */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-20"
-                        style={{ background: 'radial-gradient(circle, #ff0000, transparent)', animation: 'float 8s ease-in-out infinite' }} />
-                    <div className="absolute top-10 right-1/3 w-64 h-64 rounded-full opacity-15"
-                        style={{ background: 'radial-gradient(circle, #ff4444, transparent)', animation: 'float 10s ease-in-out infinite 2s' }} />
-                    <div className="absolute -bottom-10 right-10 w-96 h-96 rounded-full opacity-20"
-                        style={{ background: 'radial-gradient(circle, #c0392b, transparent)', animation: 'float 12s ease-in-out infinite 1s' }} />
-                    <div className="absolute bottom-0 left-1/3 w-48 h-48 rounded-full opacity-10"
-                        style={{ background: 'radial-gradient(circle, #ff6b6b, transparent)', animation: 'float 9s ease-in-out infinite 3s' }} />
-                    {/* Grid overlay */}
-                    <div className="absolute inset-0 opacity-5" style={{
-                        backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                        backgroundSize: '40px 40px'
-                    }} />
-                </div>
-
+            {/* Blue-Emerald Hero Section */}
+            <div className="relative text-white overflow-hidden py-12 sm:py-16 px-4 sm:px-6 bg-gradient-to-br from-[#0B192C] via-[#1E3E62] to-[#042f2e] border-b border-blue-500/20">
                 <div className="max-w-7xl mx-auto relative z-10">
                     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
-
-                        {/* Left — text */}
                         <div className="flex-1 min-w-0" data-aos="fade-right">
-                            <div className="flex items-center gap-3 mb-5 flex-wrap" data-aos="fade-up" data-aos-delay="100">
-                                <div className="flex items-center gap-2 rounded-full px-4 py-1.5"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)' }}>
-                                    <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" style={{ boxShadow: '0 0 6px #4ade80' }}></div>
-                                    <span className="text-white text-xs font-semibold uppercase tracking-widest">Session Control</span>
+                            <div className="flex items-center gap-2.5 mb-4 flex-wrap">
+                                <div className="flex items-center gap-2 rounded-full px-4 py-1.5 bg-slate-950/60 border border-emerald-400/30 backdrop-blur-md">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-md shadow-emerald-400/80"></div>
+                                    <span className="text-emerald-300 text-xs font-bold uppercase tracking-wider">Class Session Control</span>
                                 </div>
-                                <span className="text-xs font-bold px-3 py-1 rounded-full"
-                                    style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', color: '#fff', boxShadow: '0 4px 12px rgba(245,158,11,0.4)' }}>
-                                    by BENX
+                                <span className="text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-md shadow-blue-500/20">
+                                    Salvation Heritage
                                 </span>
                             </div>
 
-                            <h1 className="font-black tracking-tight leading-none mb-4" data-aos="fade-up" data-aos-delay="200">
-                                <span className="block text-5xl sm:text-6xl lg:text-7xl text-white">Lecturer</span>
-                                <span className="block text-5xl sm:text-6xl lg:text-7xl" style={{ color: 'rgba(255,200,200,0.9)' }}>Panel</span>
+                            <h1 className="font-black tracking-tight leading-none mb-4">
+                                <span className="block text-4xl sm:text-6xl lg:text-7xl text-white font-serif">Session</span>
+                                <span className="block text-4xl sm:text-6xl lg:text-7xl bg-gradient-to-r from-blue-300 via-emerald-200 to-white bg-clip-text text-transparent">Management</span>
                             </h1>
 
-                            <p className="text-red-100 text-base sm:text-lg max-w-xl leading-relaxed mb-8" data-aos="fade-up" data-aos-delay="300">
-                                Signed in as <span className="font-bold text-white">{lecturer.full_name}</span>
-                                <span className="text-red-200 font-mono ml-2 text-xs">({lecturer.lecturer_id})</span>
+                            <p className="text-slate-200 text-base sm:text-lg max-w-xl leading-relaxed mb-6 font-medium">
+                                Instructor: <span className="font-bold text-white">{lecturer.full_name}</span>
+                                <span className="text-emerald-300 font-mono ml-2 text-xs">({lecturer.lecturer_id})</span>
                             </p>
 
-                            {/* Info cards */}
-                            <div className="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="400">
-                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 hover:scale-105 cursor-default"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
+                            <div className="flex flex-wrap gap-3">
+                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md">
                                     <span className="text-2xl">🎓</span>
                                     <div>
-                                        <p className="text-white font-black text-xl leading-none">Start Session</p>
-                                        <p className="text-red-200 text-xs">Control Attendance</p>
+                                        <p className="text-white font-black text-xl leading-none">Instant Kiosk Sync</p>
+                                        <p className="text-emerald-300 text-xs mt-0.5">Automated Biometrics</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 transition-all duration-300 hover:scale-105 cursor-default"
-                                    style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.15)', backdropFilter: 'blur(10px)' }}>
+                                <div className="flex items-center gap-3 rounded-2xl px-4 py-3 bg-slate-950/60 border border-white/15 backdrop-blur-md">
                                     <span className="text-2xl">⏱️</span>
                                     <div>
-                                        <p className="text-white font-black text-xl leading-none">Real-Time</p>
-                                        <p className="text-red-200 text-xs">Live Tracking</p>
+                                        <p className="text-white font-black text-xl leading-none">Real-Time Poll</p>
+                                        <p className="text-emerald-300 text-xs mt-0.5">Live Attendance Count</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Right — clock.jpg with premium frame - BIG & RESPONSIVE */}
                         <div className="flex-shrink-0 flex items-center justify-center lg:justify-end" data-aos="fade-left" data-aos-delay="200">
-                            <div className="relative group w-80 sm:w-96 md:w-[28rem] lg:w-[32rem]">
-                                {/* Outer glow */}
-                                <div className="absolute -inset-4 rounded-3xl opacity-60 blur-2xl"
-                                    style={{ background: 'radial-gradient(circle, rgba(193,18,31,0.6), transparent)', animation: 'glow-pulse 3s ease-in-out infinite' }} />
-
-                                {/* Image card */}
-                                <div className="relative rounded-3xl overflow-hidden"
-                                    style={{ border: '3px solid rgba(255,255,255,0.25)', boxShadow: '0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.2)' }}>
+                            <div className="relative group w-80 sm:w-96 md:w-[26rem]">
+                                <div className="absolute -inset-4 rounded-3xl opacity-50 blur-2xl bg-gradient-to-r from-blue-600 via-emerald-500 to-teal-400" />
+                                <div className="relative rounded-3xl overflow-hidden border-2 border-white/30 shadow-2xl bg-slate-900">
                                     <img src="/clock.jpg" alt="Session Control"
                                         className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700"
-                                        style={{ filter: 'brightness(1.1) contrast(1.05) saturate(1.1)', minHeight: '400px' }} />
-
-                                    {/* Bottom gradient */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                                    {/* Corner brackets */}
-                                    {[
-                                        'top-3 left-3 border-t-2 border-l-2 rounded-tl-lg',
-                                        'top-3 right-3 border-t-2 border-r-2 rounded-tr-lg',
-                                        'bottom-3 left-3 border-b-2 border-l-2 rounded-bl-lg',
-                                        'bottom-3 right-3 border-b-2 border-r-2 rounded-br-lg',
-                                    ].map((cls, i) => (
-                                        <div key={i} className={`absolute w-8 h-8 border-white/70 ${cls}`} />
-                                    ))}
-
-                                    {/* Active badge */}
-                                    <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center"
-                                        style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', border: '2px solid rgba(255,255,255,0.8)', boxShadow: '0 0 15px rgba(34,197,94,0.6)' }}>
-                                        <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                                        </svg>
-                                    </div>
-
-                                    {/* Live badge */}
-                                    <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full px-2.5 py-1"
-                                        style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.2)' }}>
-                                        <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                                        <span className="text-white text-[10px] font-semibold">ACTIVE</span>
-                                    </div>
+                                        style={{ filter: 'brightness(1.05) contrast(1.05)', minHeight: '320px' }} />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
                                 </div>
                             </div>
                         </div>
@@ -629,97 +532,85 @@ function SessionPanel({ lecturer, onLogout }) {
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
 
                     {/* Left: info */}
                     <div className="lg:col-span-2 space-y-5" data-aos="fade-right">
                         {/* Lecturer card */}
-                        <div className="rounded-3xl p-5" style={{ background: 'linear-gradient(145deg, #111111, #0f0f0f)', border: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}>
-                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Your Profile</p>
+                        <div className="rounded-3xl p-6 bg-slate-900 border border-blue-500/25 shadow-xl">
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Instructor Credentials</p>
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-bold flex-shrink-0"
-                                    style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>
-                                    {lecturer.full_name?.[0] ?? '?'}
+                                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-bold flex-shrink-0 bg-gradient-to-tr from-blue-600 to-emerald-500">
+                                    {lecturer.full_name?.[0] ?? 'L'}
                                 </div>
                                 <div>
                                     <p className="font-bold text-white text-sm">{lecturer.full_name}</p>
-                                    <p className="text-xs text-gray-400 font-mono">{lecturer.lecturer_id}</p>
+                                    <p className="text-xs text-emerald-400 font-mono">{lecturer.lecturer_id}</p>
                                 </div>
                             </div>
                             {lecturer.department && (
-                                <p className="text-xs text-gray-300 rounded-xl px-3 py-2" style={{ background: 'rgba(193,18,31,0.1)', border: '1px solid rgba(193,18,31,0.2)' }}>
-                                    {lecturer.department}
+                                <p className="text-xs text-slate-300 rounded-2xl px-3.5 py-2 bg-blue-500/10 border border-blue-500/20">
+                                    Assigned: {lecturer.department}
                                 </p>
                             )}
                         </div>
 
-                        <div className="rounded-3xl p-5" style={{ background: 'linear-gradient(145deg, #111111, #0f0f0f)', border: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 4px 24px rgba(0,0,0,0.4)' }}>
-                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">How It Works</p>
+                        <div className="rounded-3xl p-6 bg-slate-900 border border-blue-500/25 shadow-xl">
+                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Instructions</p>
                             <div className="space-y-3">
                                 {[
-                                    ['1', 'Select your class and term'],
-                                    ['2', 'Enter your course code and name'],
-                                    ['3', 'Set the lecture end time'],
-                                    ['4', 'Click Start — students can now scan their face'],
-                                    ['5', 'Click Stop when done'],
+                                    ['1', 'Select target class and term'],
+                                    ['2', 'Input course subject details'],
+                                    ['3', 'Set lecture closing window'],
+                                    ['4', 'Click Start Session — Kiosk unlocks immediately'],
+                                    ['5', 'Click Stop Session when class concludes'],
                                 ].map(([n, t]) => (
                                     <div key={n} className="flex gap-3">
-                                        <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-                                            style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>{n}</span>
-                                        <p className="text-xs text-gray-300 leading-relaxed">{t}</p>
+                                        <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-black text-white flex-shrink-0 bg-gradient-to-r from-blue-600 to-emerald-600">{n}</span>
+                                        <p className="text-xs text-slate-300 leading-relaxed">{t}</p>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-
-                        <div className="rounded-3xl p-5" style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)' }}>
-                            <p className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-3">⚠ Important</p>
-                            <div className="space-y-2 text-xs text-amber-200">
-                                <p>• Only one session per class + term at a time.</p>
-                                <p>• End time: Future times use today&apos;s date, past times use tomorrow&apos;s date.</p>
-                                <p>• Session stays open until you manually click Stop (end time is for reference).</p>
-                                <p>• Students outside your class/term cannot mark attendance.</p>
                             </div>
                         </div>
                     </div>
 
                     {/* Right: form / active session */}
                     <div className="lg:col-span-3" data-aos="fade-left" data-aos-delay="200">
-                        <div className="rounded-3xl overflow-hidden" style={{ background: 'linear-gradient(145deg, #111111, #0f0f0f)', border: '1px solid rgba(193,18,31,0.2)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
+                        <div className="rounded-3xl overflow-hidden bg-slate-900 border border-blue-500/25 shadow-xl">
 
                             {!activeSession ? (
                                 <>
-                                    <div className="px-6 py-5 flex items-center gap-3" style={{ borderBottom: '1px solid rgba(193,18,31,0.2)' }}>
-                                        <div className="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm"
-                                            style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>🎓</div>
+                                    <div className="px-6 py-5 flex items-center gap-3 border-b border-slate-800 bg-slate-950/40">
+                                        <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-white font-bold text-sm bg-gradient-to-r from-blue-600 to-emerald-600">
+                                            🎓
+                                        </div>
                                         <div>
                                             <p className="font-bold text-white">Start Attendance Session</p>
-                                            <p className="text-xs text-gray-400">Fill in all fields to open attendance for your class</p>
+                                            <p className="text-xs text-slate-400">Open biometric attendance for your students</p>
                                         </div>
                                     </div>
                                     <div className="p-6 space-y-4">
-
                                         {/* Class */}
                                         <div>
-                                            <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
-                                                Class <span className="text-red-500">*</span>
+                                            <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                                Class <span className="text-emerald-400">*</span>
                                             </label>
                                             <select value={form.department}
                                                 onChange={e => setForm(p => ({ ...p, department: e.target.value }))}
                                                 className={inputCls('department')}>
-                                                <option value="">— Select Class —</option>
+                                                <option value="">— Select Class (JSS1 to SS3) —</option>
                                                 {DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
                                             </select>
-                                            {errors.department && <p className="text-red-500 text-xs mt-1">⚠ {errors.department}</p>}
+                                            {errors.department && <p className="text-rose-400 text-xs mt-1">⚠ {errors.department}</p>}
                                         </div>
 
                                         {/* Term */}
                                         <div>
-                                            <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
-                                                Term <span className="text-red-500">*</span>
+                                            <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                                Academic Term <span className="text-emerald-400">*</span>
                                             </label>
-                                            <div className="grid grid-cols-3 gap-2">
+                                            <div className="grid grid-cols-3 gap-2.5">
                                                 {[
                                                     { value: 1, label: 'First Term' },
                                                     { value: 2, label: 'Second Term' },
@@ -727,135 +618,104 @@ function SessionPanel({ lecturer, onLogout }) {
                                                 ].map(t => (
                                                     <button key={t.value} type="button"
                                                         onClick={() => setForm(p => ({ ...p, semester: t.value }))}
-                                                        className={`py-2.5 rounded-xl text-xs font-bold border-2 transition-all ${
+                                                        className={`py-3 rounded-2xl text-xs font-bold transition-all ${
                                                             Number(form.semester) === t.value
-                                                                ? 'text-white border-transparent shadow-md'
-                                                                : 'border-gray-200 text-gray-500 hover:border-red-200 hover:text-[#C1121F] bg-gray-50'
-                                                        }`}
-                                                        style={Number(form.semester) === t.value ? { background: 'linear-gradient(135deg,#C1121F,#E63946)' } : {}}>
+                                                                ? 'text-white bg-gradient-to-r from-blue-600 to-emerald-600 shadow-md shadow-blue-500/30'
+                                                                : 'bg-slate-950 border border-slate-700 text-slate-400 hover:bg-slate-800'
+                                                        }`}>
                                                         {t.label}
                                                     </button>
                                                 ))}
                                             </div>
-                                            {errors.semester && <p className="text-red-500 text-xs mt-1">⚠ {errors.semester}</p>}
+                                            {errors.semester && <p className="text-rose-400 text-xs mt-1">⚠ {errors.semester}</p>}
                                         </div>
 
                                         {/* Course Code + Name */}
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div>
-                                                <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
-                                                    Course Code <span className="text-red-500">*</span>
+                                                <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                                    Subject Code <span className="text-emerald-400">*</span>
                                                 </label>
-                                                <input type="text" placeholder="e.g. CSE201"
+                                                <input type="text" placeholder="e.g. MTH101"
                                                     value={form.course_code}
                                                     onChange={e => setForm(p => ({ ...p, course_code: e.target.value }))}
                                                     className={inputCls('course_code')} />
-                                                {errors.course_code && <p className="text-red-500 text-xs mt-1">⚠ {errors.course_code}</p>}
+                                                {errors.course_code && <p className="text-rose-400 text-xs mt-1">⚠ {errors.course_code}</p>}
                                             </div>
                                             <div>
-                                                <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
-                                                    Course Name <span className="text-red-500">*</span>
+                                                <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                                    Subject Name <span className="text-emerald-400">*</span>
                                                 </label>
-                                                <input type="text" placeholder="e.g. Data Structures"
+                                                <input type="text" placeholder="e.g. General Mathematics"
                                                     value={form.course_name}
                                                     onChange={e => setForm(p => ({ ...p, course_name: e.target.value }))}
                                                     className={inputCls('course_name')} />
-                                                {errors.course_name && <p className="text-red-500 text-xs mt-1">⚠ {errors.course_name}</p>}
+                                                {errors.course_name && <p className="text-rose-400 text-xs mt-1">⚠ {errors.course_name}</p>}
                                             </div>
                                         </div>
 
                                         {/* End Time */}
                                         <div>
-                                            <label className="block text-xs font-bold text-gray-400 mb-1.5 uppercase tracking-wider">
-                                                Lecture End Time <span className="text-red-500">*</span>
+                                            <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider">
+                                                Class End Time <span className="text-emerald-400">*</span>
                                             </label>
                                             <input type="time" value={form.end_time}
                                                 onChange={e => setForm(p => ({ ...p, end_time: e.target.value }))}
                                                 className={inputCls('end_time')} />
                                             {errors.end_time
-                                                ? <p className="text-red-500 text-xs mt-1">⚠ {errors.end_time}</p>
-                                                : <p className="text-gray-400 text-xs mt-1">Set any future time. If you select a past time, it will be scheduled for tomorrow. Session stays open until you click Stop.</p>
+                                                ? <p className="text-rose-400 text-xs mt-1">⚠ {errors.end_time}</p>
+                                                : <p className="text-slate-400 text-xs mt-1">Attendance stays open until manually closed.</p>
                                             }
                                         </div>
 
                                         <button onClick={handleStart} disabled={loading}
-                                            className="w-full py-3.5 rounded-2xl text-white font-bold text-sm transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                                            style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)', boxShadow: '0 4px 20px rgba(193,18,31,0.35)' }}>
-                                            {loading ? '⏳ Starting...' : '🎯 Start Attendance Session'}
+                                            className="w-full py-4 rounded-2xl text-white font-black text-sm bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-xl shadow-blue-600/30 active:scale-95 transition-all disabled:opacity-50">
+                                            {loading ? '⏳ Starting...' : '🎯 Open Attendance Session'}
                                         </button>
-
-                                        <Link href={`/lecturer/${encodeURIComponent(lecturer.lecturer_id)}/report`}
-                                            className="w-full py-3 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-500 hover:border-[#C1121F] hover:text-[#C1121F] transition-all">
-                                            📊 View My Report
-                                        </Link>
                                     </div>
                                 </>
                             ) : (
                                 <>
-                                    <div className="px-6 py-5 flex items-center gap-3"
-                                        style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>
-                                        <div className="w-3 h-3 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+                                    <div className="px-6 py-5 flex items-center gap-3 bg-gradient-to-r from-blue-900 to-emerald-900 border-b border-emerald-500/30">
+                                        <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
                                         <div className="flex-1">
-                                            <p className="text-white font-bold">Session Active</p>
-                                            <p className="text-red-100 text-xs">Class {activeSession.department} · {activeSession.semester === 1 ? 'First Term' : activeSession.semester === 2 ? 'Second Term' : activeSession.semester === 3 ? 'Third Term' : `${activeSession.semester}th Term`}</p>
+                                            <p className="text-white font-black">Session Active</p>
+                                            <p className="text-emerald-200 text-xs">Class {activeSession.department} • {activeSession.semester === 1 ? 'First Term' : activeSession.semester === 2 ? 'Second Term' : 'Third Term'}</p>
                                         </div>
-                                        <span className="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full border border-white/30">LIVE</span>
+                                        <span className="bg-emerald-500/30 text-emerald-300 text-xs font-black px-3 py-1 rounded-full border border-emerald-400/40">LIVE</span>
                                     </div>
                                     <div className="p-6 space-y-5">
                                         <div className="grid grid-cols-2 gap-3">
                                             {[
-                                                ['Course',      activeSession.course_name],
-                                                ['Code',        activeSession.course_code],
-                                                ['Class',       activeSession.department],
-                                                ['Term',        activeSession.semester === 1 ? 'First Term' : activeSession.semester === 2 ? 'Second Term' : activeSession.semester === 3 ? 'Third Term' : `${activeSession.semester}th Term`],
-                                                ['Lecturer',    lecturer.full_name],
-                                                ['ID',          lecturer.lecturer_id],
+                                                ['Subject',      activeSession.course_name],
+                                                ['Code',         activeSession.course_code],
+                                                ['Class',        activeSession.department],
+                                                ['Term',         activeSession.semester === 1 ? 'First Term' : activeSession.semester === 2 ? 'Second Term' : 'Third Term'],
+                                                ['Instructor',   lecturer.full_name],
+                                                ['ID',           lecturer.lecturer_id],
                                             ].map(([k, v]) => (
-                                                <div key={k} className="bg-gray-50 rounded-xl p-3 border border-gray-100">
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">{k}</p>
-                                                    <p className="text-sm font-semibold text-gray-800 truncate">{v || '—'}</p>
+                                                <div key={k} className="bg-slate-950/80 rounded-2xl p-3.5 border border-slate-800">
+                                                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">{k}</p>
+                                                    <p className="text-sm font-bold text-white truncate">{v || '—'}</p>
                                                 </div>
                                             ))}
                                         </div>
 
                                         <div className="grid grid-cols-2 gap-4">
-                                            <div className="bg-red-50 border border-red-100 rounded-2xl p-4 text-center">
-                                                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Time Remaining</p>
+                                            <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 text-center">
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Time Remaining</p>
                                                 <Countdown endsAt={activeSession.expected_end_time || toDatetimeString(form.end_time)} />
-                                                <p className="text-xs text-gray-400 mt-1">
-                                                    Ends at {activeSession.expected_end_time
-                                                        ? new Date(activeSession.expected_end_time).toLocaleTimeString('en-MY', { hour: '2-digit', minute: '2-digit' })
-                                                        : form.end_time}
-                                                </p>
                                             </div>
-                                            <div className="bg-green-50 border border-green-100 rounded-2xl p-4 text-center">
-                                                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Students Present</p>
-                                                <span className="text-3xl font-extrabold text-emerald-600">{markedCount}</span>
-                                                <p className="text-xs text-gray-400 mt-1">marked attendance</p>
+                                            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 text-center">
+                                                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Students Marked</p>
+                                                <span className="text-3xl font-black text-emerald-400">{markedCount}</span>
                                             </div>
-                                        </div>
-
-                                        <div className="bg-green-50 border border-green-200 rounded-2xl px-4 py-3 flex items-center gap-2">
-                                            <span className="text-green-600">✓</span>
-                                            <p className="text-green-700 text-xs font-semibold">
-                                                Attendance is OPEN for {activeSession.department} ({activeSession.semester === 1 ? 'First Term' : activeSession.semester === 2 ? 'Second Term' : activeSession.semester === 3 ? 'Third Term' : `${activeSession.semester}th Term`})
-                                            </p>
                                         </div>
 
                                         <button onClick={handleStop} disabled={loading}
-                                            className="w-full py-3.5 rounded-2xl text-white font-bold text-sm transition-all active:scale-[0.98] disabled:opacity-50"
-                                            style={{ background: 'linear-gradient(135deg,#7f1d1d,#dc2626)' }}>
+                                            className="w-full py-4 rounded-2xl text-white font-black text-sm bg-gradient-to-r from-rose-600 to-red-700 hover:from-rose-500 hover:to-red-600 shadow-xl shadow-rose-600/30 active:scale-95 transition-all disabled:opacity-50">
                                             {loading ? '⏳ Stopping...' : '🛑 Stop Session'}
                                         </button>
-
-                                        <Link href={`/lecturer/${encodeURIComponent(lecturer.lecturer_id)}/report`}
-                                            className="w-full py-3 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 border-2 border-[#C1121F] text-[#C1121F] hover:bg-red-50 transition-all">
-                                            📊 View My Report
-                                        </Link>
-
-                                        <p className="text-center text-xs text-gray-400">
-                                            Updates every 30 seconds · Students outside this class cannot mark attendance
-                                        </p>
                                     </div>
                                 </>
                             )}
@@ -865,13 +725,15 @@ function SessionPanel({ lecturer, onLogout }) {
             </div>
 
             {/* Footer */}
-            <footer className="border-t border-gray-200 bg-white py-4 mt-4">
-                <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2 text-xs text-gray-400">
+            <footer className="border-t border-slate-800 bg-slate-950 py-6 mt-12 text-xs text-slate-500">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded flex items-center justify-center text-white text-[10px] font-bold" style={{ background: '#C1121F' }}>FA</div>
-                        <span className="font-medium text-gray-500">FaceAttend — Lecturer Panel</span>
+                        <div className="w-6 h-6 rounded-lg flex items-center justify-center text-white text-[10px] font-black bg-gradient-to-tr from-blue-700 to-emerald-500">
+                            SH
+                        </div>
+                        <span className="font-semibold text-slate-300">Salvation Heritage Faculty Terminal</span>
                     </div>
-                    <button onClick={onLogout} className="text-[#C1121F] font-medium hover:underline">Sign Out</button>
+                    <button onClick={onLogout} className="text-rose-400 hover:underline">Sign Out</button>
                 </div>
             </footer>
         </div>

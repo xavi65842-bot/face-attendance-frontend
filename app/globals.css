@@ -64,17 +64,17 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0f172a;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #C1121F, #E63946);
+  background: linear-gradient(135deg, #2563eb, #10b981);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #9b0d18, #C1121F);
+  background: linear-gradient(135deg, #1d4ed8, #059669);
 }
 
 /* ── Liquid fill attendance bar ── */

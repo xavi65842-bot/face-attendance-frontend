@@ -214,18 +214,19 @@ export default function CameraCapture({
 
             // Gradient background
             const grad = ctx.createLinearGradient(0, 0, 480, 480);
-            grad.addColorStop(0, '#1e293b');
-            grad.addColorStop(1, '#0f172a');
+            grad.addColorStop(0, '#0f172a');
+            grad.addColorStop(1, '#064e3b');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, 480, 480);
 
             // Head silhouette
-            ctx.fillStyle = '#f87171';
+            ctx.fillStyle = '#38bdf8';
             ctx.beginPath();
             ctx.arc(240, 200, 90, 0, Math.PI * 2);
             ctx.fill();
 
-            // Shoulders silhouette
+            // Shoulders silhouette (school uniform blue)
+            ctx.fillStyle = '#1d4ed8';
             ctx.beginPath();
             ctx.arc(240, 420, 150, Math.PI, Math.PI * 2);
             ctx.fill();
@@ -237,7 +238,7 @@ export default function CameraCapture({
             ctx.arc(275, 185, 12, 0, Math.PI * 2);
             ctx.fill();
 
-            ctx.fillStyle = '#1e293b';
+            ctx.fillStyle = '#0f172a';
             ctx.beginPath();
             ctx.arc(205, 185, 6, 0, Math.PI * 2);
             ctx.arc(275, 185, 6, 0, Math.PI * 2);
@@ -251,10 +252,10 @@ export default function CameraCapture({
             ctx.stroke();
 
             // Watermark text
-            ctx.fillStyle = '#94a3b8';
-            ctx.font = 'bold 16px sans-serif';
+            ctx.fillStyle = '#a7f3d0';
+            ctx.font = 'bold 15px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('Simulated Test Face (PC Mode)', 240, 460);
+            ctx.fillText('Salvation Heritage Demo Face', 240, 460);
 
             const testDataUrl = testCanvas.toDataURL('image/jpeg', 0.9);
             setUploadedPreview(testDataUrl);
@@ -269,31 +270,31 @@ export default function CameraCapture({
 
             {/* Insecure Origin notice for Mobile LAN testing */}
             {isInsecureOrigin && (
-                <div className="mb-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
+                <div className="mb-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
                     <p className="font-semibold flex items-center gap-1.5 mb-0.5">
                         <span>📱</span> Mobile Network Note
                     </p>
                     <p className="text-[11px] text-amber-300/90 leading-relaxed">
-                        Mobile browsers (Chrome / Safari) disable camera hardware over plain HTTP IPs (e.g. <code>http://192.168...</code>). You can use <strong>Upload Photo</strong> below or access via HTTPS / localhost.
+                        Mobile browsers require HTTPS for camera hardware. You can use <strong>Upload Photo</strong> or <strong>Demo Face</strong> below, or test via localhost.
                     </p>
                 </div>
             )}
 
             {/* Camera / Preview container */}
-            <div className="relative rounded-2xl overflow-hidden bg-gray-950 shadow-2xl border border-white/10">
+            <div className="relative rounded-3xl overflow-hidden bg-slate-950 shadow-2xl border border-blue-500/20">
                 {uploadedPreview ? (
-                    <div className="relative w-full aspect-video bg-black flex items-center justify-center">
+                    <div className="relative w-full aspect-video bg-slate-950 flex items-center justify-center">
                         <img
                             src={uploadedPreview}
                             alt="Selected preview"
                             className="w-full h-full object-contain"
                         />
-                        <div className="absolute top-3 left-3 bg-black/70 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/20">
-                            🖼️ PHOTO PREVIEW
+                        <div className="absolute top-3 left-3 bg-blue-900/80 backdrop-blur text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-400/30">
+                            🖼️ PHOTO READY
                         </div>
                         <button
                             onClick={() => setUploadedPreview(null)}
-                            className="absolute top-3 right-3 bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold px-2.5 py-1 rounded-lg transition-all"
+                            className="absolute top-3 right-3 bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold px-2.5 py-1 rounded-xl transition-all"
                         >
                             ✕ Clear
                         </button>
@@ -316,21 +317,21 @@ export default function CameraCapture({
                 {/* Face positioning guide overlay */}
                 {isCameraReady && !isLoading && countdown === null && !uploadedPreview && (
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                        <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-2xl border-2 border-dashed border-red-400/70 animate-pulse flex items-center justify-center">
-                            <span className="bg-black/70 backdrop-blur text-white text-[11px] px-3 py-1 rounded-full border border-white/10 font-medium">
-                                Center your face
+                        <div className="w-44 h-44 sm:w-52 sm:h-52 rounded-3xl border-2 border-dashed border-emerald-400/80 animate-pulse flex items-center justify-center shadow-lg shadow-emerald-500/10">
+                            <span className="bg-slate-900/80 backdrop-blur text-emerald-300 text-[11px] px-3.5 py-1 rounded-full border border-emerald-500/30 font-semibold">
+                                Align Face in Box
                             </span>
                         </div>
                     </div>
                 )}
 
-                {/* Flip camera button (top right of feed) */}
+                {/* Flip camera button */}
                 {!uploadedPreview && (hasMultipleCameras || isCameraReady) && (
                     <button
                         onClick={toggleCamera}
                         type="button"
                         title="Flip Camera (Front / Rear)"
-                        className="absolute top-3 right-3 bg-black/60 backdrop-blur hover:bg-black/80 text-white text-xs px-2.5 py-1.5 rounded-xl border border-white/20 flex items-center gap-1.5 transition-all active:scale-95 shadow-md"
+                        className="absolute top-3 right-3 bg-slate-900/70 backdrop-blur hover:bg-slate-900 text-white text-xs px-2.5 py-1.5 rounded-xl border border-white/20 flex items-center gap-1.5 transition-all active:scale-95 shadow-md"
                     >
                         <span>🔄</span>
                         <span className="text-[10px] font-semibold">{facingMode === 'user' ? 'Front' : 'Back'}</span>
@@ -339,29 +340,29 @@ export default function CameraCapture({
 
                 {/* Processing overlay */}
                 {isLoading && (
-                    <div className="absolute inset-0 bg-black/85 flex items-center justify-center backdrop-blur-sm z-20">
+                    <div className="absolute inset-0 bg-slate-950/85 flex items-center justify-center backdrop-blur-sm z-20">
                         <div className="text-center px-4">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500 mx-auto mb-3" />
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400 mx-auto mb-3" />
                             <p className="text-white text-sm font-semibold">
-                                Processing Face Recognition...
+                                Verifying Attendance Biometrics...
                             </p>
-                            <p className="text-gray-400 text-xs mt-1">Amazon Rekognition Backend</p>
+                            <p className="text-emerald-400 text-xs mt-1">Salvation Heritage System</p>
                         </div>
                     </div>
                 )}
 
                 {/* Countdown overlay */}
                 {countdown !== null && countdown > 0 && (
-                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-20">
+                    <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center z-20">
                         <div className="text-8xl font-black text-white animate-ping drop-shadow-2xl">{countdown}</div>
                     </div>
                 )}
 
                 {/* Camera starting overlay */}
                 {!isCameraReady && !error && !uploadedPreview && (
-                    <div className="absolute inset-0 bg-gray-900 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-slate-950 flex items-center justify-center">
                         <div className="text-center">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-400 mx-auto mb-2" />
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-2" />
                             <p className="text-white text-xs font-medium">Starting camera...</p>
                         </div>
                     </div>
@@ -370,20 +371,22 @@ export default function CameraCapture({
 
             {/* Error or No Camera Fallback box */}
             {error && !uploadedPreview && (
-                <div className="mt-3 p-4 bg-red-950/50 border border-red-500/30 rounded-2xl text-center">
-                    <p className="text-red-400 text-xs sm:text-sm font-medium leading-relaxed">❌ {error}</p>
+                <div className="mt-3 p-4 bg-slate-900/90 border border-blue-500/30 rounded-2xl text-center">
+                    <p className="text-slate-300 text-xs sm:text-sm font-medium leading-relaxed">
+                        ℹ️ {error}
+                    </p>
                     <div className="mt-3 flex flex-wrap gap-2 justify-center">
                         <button
                             type="button"
                             onClick={() => initCamera(facingMode)}
-                            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-900/40 text-red-200 hover:bg-red-800/60 transition-all border border-red-500/30"
+                            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-blue-900/40 text-blue-200 hover:bg-blue-800/60 transition-all border border-blue-500/30"
                         >
                             🔄 Retry Camera
                         </button>
                         <button
                             type="button"
                             onClick={handleSimulateFace}
-                            className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-900/40 text-blue-200 hover:bg-blue-800/60 transition-all border border-blue-500/30"
+                            className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-900/40 text-emerald-200 hover:bg-emerald-800/60 transition-all border border-emerald-500/30"
                         >
                             ⚡ Simulate Test Face (No Camera)
                         </button>
@@ -398,23 +401,23 @@ export default function CameraCapture({
                     onClick={startCountdown}
                     disabled={(!isCameraReady && !uploadedPreview) || isLoading}
                     className={`
-                        px-5 py-2.5 rounded-xl font-bold text-white transition-all duration-200
+                        px-6 py-3 rounded-2xl font-bold text-white transition-all duration-200
                         flex items-center gap-2 shadow-lg text-xs sm:text-sm
                         ${(!isCameraReady && !uploadedPreview) || isLoading
-                            ? 'bg-gray-800 text-gray-500 cursor-not-allowed opacity-50'
-                            : 'bg-gradient-to-r from-[#C1121F] to-[#E63946] hover:opacity-90 active:scale-95'
+                            ? 'bg-slate-800 text-slate-500 cursor-not-allowed opacity-50'
+                            : 'bg-gradient-to-r from-blue-700 via-blue-600 to-emerald-600 hover:from-blue-600 hover:to-emerald-500 active:scale-95 shadow-blue-600/25'
                         }
                     `}
                 >
                     <span className="text-base">{uploadedPreview ? '🚀' : '📸'}</span>
-                    <span>{isLoading ? 'Processing...' : (uploadedPreview ? 'Submit Selected Photo' : buttonText)}</span>
+                    <span>{isLoading ? 'Verifying...' : (uploadedPreview ? 'Submit Selected Photo' : buttonText)}</span>
                 </button>
 
                 {/* File Upload Fallback Option */}
                 <label className={`
-                    px-4 py-2.5 rounded-xl font-semibold text-white cursor-pointer transition-all duration-200
-                    flex items-center gap-2 shadow-lg text-xs sm:text-sm border border-white/20
-                    ${isLoading ? 'bg-gray-800 text-gray-500 opacity-50 pointer-events-none' : 'bg-gray-900 hover:bg-gray-800 active:scale-95'}
+                    px-4 py-3 rounded-2xl font-semibold text-white cursor-pointer transition-all duration-200
+                    flex items-center gap-2 shadow-lg text-xs sm:text-sm border border-slate-700 bg-slate-900 hover:bg-slate-800 active:scale-95
+                    ${isLoading ? 'opacity-50 pointer-events-none' : ''}
                 `}>
                     <span className="text-base">📁</span>
                     <span>Upload Photo</span>
@@ -438,13 +441,13 @@ export default function CameraCapture({
                     />
                 </label>
 
-                {/* Simulate Face Button (great for testing without a camera) */}
+                {/* Simulate Face Button */}
                 <button
                     type="button"
                     onClick={handleSimulateFace}
                     disabled={isLoading}
-                    title="Simulate a test face without needing a camera"
-                    className="px-3.5 py-2.5 rounded-xl font-semibold text-gray-300 hover:text-white bg-white/5 hover:bg-white/10 transition-all text-xs border border-white/10 flex items-center gap-1.5"
+                    title="Simulate a test student face without a camera"
+                    className="px-3.5 py-3 rounded-2xl font-semibold text-slate-300 hover:text-white bg-slate-900/80 hover:bg-slate-800 transition-all text-xs border border-slate-700 flex items-center gap-1.5"
                 >
                     <span>⚡</span>
                     <span>Demo Face</span>
@@ -453,7 +456,7 @@ export default function CameraCapture({
                 {onClose && (
                     <button
                         onClick={onClose}
-                        className="px-3.5 py-2.5 rounded-xl font-semibold bg-gray-900 text-gray-400 hover:text-white hover:bg-gray-800 transition-all text-xs border border-white/10"
+                        className="px-3.5 py-3 rounded-2xl font-semibold bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800 transition-all text-xs border border-slate-700"
                     >
                         ✕ Cancel
                     </button>
@@ -462,15 +465,15 @@ export default function CameraCapture({
 
             {/* Status footer */}
             <div className="mt-3 text-center">
-                <p className="text-[11px] text-gray-400">
-                    💡 Works with webcam, phone camera, or <strong>Upload Photo / Demo Face</strong>.
+                <p className="text-[11px] text-slate-400">
+                    🎓 Salvation Heritage Attendance Kiosk • Instant Biometric Verification
                 </p>
-                <p className="text-[10px] text-gray-500 mt-0.5">
+                <p className="text-[10px] text-slate-500 mt-0.5">
                     {uploadedPreview
-                        ? '🖼️ Photo selected — click Submit above'
+                        ? '🖼️ Photo ready — click Submit above'
                         : isCameraReady
                         ? `✅ Camera Active (${facingMode === 'user' ? 'Front' : 'Back'})`
-                        : '⏳ Camera idle — use Upload Photo or Demo Face'}
+                        : '⏳ Ready for face scan, upload, or demo'}
                 </p>
             </div>
         </div>

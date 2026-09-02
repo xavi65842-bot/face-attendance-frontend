@@ -3,11 +3,11 @@ import 'aos/dist/aos.css';
 import ThemeWrapper from '../components/ThemeWrapper';
 
 export const metadata = {
-    title: process.env.NEXT_PUBLIC_APP_TITLE || 'Face Attendance System by BENX - AI-Powered Attendance Tracking',
-    description: 'Advanced AI-powered face recognition attendance system with real-time analytics for educational institutions. Built by BENX.',
-    keywords: 'face recognition, attendance system, AI, education, student management, BENX, facial recognition, automated attendance',
-    authors: [{ name: 'BENX Development Team' }],
-    robots: 'noindex, nofollow', // Prevent search engine indexing for internal systems
+    title: 'Salvation Heritage — Smart Biometric Face Attendance System',
+    description: 'Salvation Heritage School Biometric Attendance and Student Information Management System.',
+    keywords: 'Salvation Heritage, face attendance, student attendance, school management, biometric',
+    authors: [{ name: 'Salvation Heritage' }],
+    robots: 'noindex, nofollow',
 };
 
 // Next.js 15+ requires viewport to be a separate named export

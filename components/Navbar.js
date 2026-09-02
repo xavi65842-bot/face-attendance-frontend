@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-const NAV = [
-    { path: '/',          label: 'Home'      },
-    { path: '/dashboard', label: 'Dashboard' },
-    { path: '/register',  label: 'Register'  },
-    { path: '/students',  label: 'Students'  },
-    { path: '/lecturer',  label: 'Lecturer'  },
+const STUDENT_NAV = [
+    { path: '/',         label: 'Attendance Kiosk', icon: '📸' },
+    { path: '/register', label: 'Register Student', icon: '📝' },
+];
+
+const ADMIN_NAV = [
+    { path: '/dashboard', label: 'Admin Dashboard', icon: '📊', admin: true },
+    { path: '/students',  label: 'Student Directory', icon: '👥', admin: true },
+    { path: '/lecturer',  label: 'Faculty Portal',    icon: '👨‍🏫', admin: true },
 ];
 
 export default function Navbar() {
@@ -17,58 +20,80 @@ export default function Navbar() {
     const [open, setOpen] = useState(false);
 
     return (
-        <nav style={{
-            background: '#fff',
-            borderBottom: '1px solid #f0f0f0',
-            boxShadow: '0 1px 8px rgba(0,0,0,0.06)',
-            position: 'sticky', top: 0, zIndex: 50,
-            fontFamily: "'Inter','Segoe UI',sans-serif",
-        }}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
 
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-3 no-underline">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0 shadow-lg"
-                        style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>
-                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9M19 9H14V4H5V21H19V9Z"/>
-                        </svg>
+                {/* School Logo & Name */}
+                <Link href="/" className="flex items-center gap-3 no-underline group flex-shrink-0">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500 flex items-center justify-center text-white font-black text-base shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-all">
+                        <span className="tracking-tighter">SH</span>
                     </div>
-                    <div className="hidden sm:block">
+                    <div>
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-lg" style={{ color: '#C1121F' }}>Face Attendance System</span>
-                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-white">by BENX</span>
+                            <span className="font-black text-lg sm:text-xl tracking-tight text-slate-900 group-hover:text-blue-700 transition-colors">
+                                Salvation Heritage
+                            </span>
+                            <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/50">
+                                Official Portal
+                            </span>
                         </div>
+                        <p className="text-[11px] font-semibold text-slate-500 tracking-wide hidden sm:block">
+                            Smart Biometric Attendance System
+                        </p>
                     </div>
                 </Link>
 
                 {/* Desktop links */}
-                <div className="hidden md:flex items-center gap-1">
-                    {NAV.map(({ path, label }) => {
-                        const active = pathname === path;
-                        return (
-                            <Link key={path} href={path}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors no-underline ${
-                                    active
-                                        ? 'text-[#C1121F] bg-red-50'
-                                        : 'text-gray-500 hover:text-[#C1121F] hover:bg-red-50'
-                                }`}>
-                                {label}
-                                {active && <span className="ml-1.5 w-1.5 h-1.5 rounded-full bg-[#C1121F] inline-block align-middle" />}
-                            </Link>
-                        );
-                    })}
+                <div className="hidden lg:flex items-center gap-1 bg-slate-100/80 p-1.5 rounded-2xl border border-slate-200/60">
+                    <div className="flex items-center gap-1">
+                        {STUDENT_NAV.map(({ path, label, icon }) => {
+                            const active = pathname === path;
+                            return (
+                                <Link key={path} href={path}
+                                    className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all no-underline flex items-center gap-1.5 ${
+                                        active
+                                            ? 'text-white bg-gradient-to-r from-blue-700 to-blue-600 shadow-md shadow-blue-700/20'
+                                            : 'text-slate-600 hover:text-blue-700 hover:bg-white'
+                                    }`}>
+                                    <span>{icon}</span>
+                                    <span>{label}</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    <div className="h-4 w-px bg-slate-300 mx-1"></div>
+
+                    <div className="flex items-center gap-1">
+                        {ADMIN_NAV.map(({ path, label, icon }) => {
+                            const active = pathname === path;
+                            return (
+                                <Link key={path} href={path}
+                                    className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all no-underline flex items-center gap-1.5 ${
+                                        active
+                                            ? 'text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-md shadow-emerald-600/20'
+                                            : 'text-slate-600 hover:text-emerald-700 hover:bg-white'
+                                    }`}>
+                                    <span>{icon}</span>
+                                    <span>{label}</span>
+                                    <span className="text-[9px] px-1 py-0.2 rounded bg-slate-200/70 text-slate-600">Admin</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
 
-                {/* Right: CTA + hamburger */}
-                <div className="flex items-center gap-3">
+                {/* Right: Quick Action + Mobile Menu Toggle */}
+                <div className="flex items-center gap-2 sm:gap-3">
                     <Link href="/register"
-                        className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white no-underline transition-all active:scale-95"
-                        style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>
-                        + Register Student
+                        className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/30 active:scale-95 transition-all no-underline">
+                        <span>+</span>
+                        <span>Register Student</span>
                     </Link>
+
                     <button onClick={() => setOpen(v => !v)}
-                        className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:border-red-200 hover:text-[#C1121F] transition-colors">
+                        aria-label="Toggle menu"
+                        className="lg:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
                         {open
                             ? <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                             : <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
@@ -77,27 +102,49 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile menu */}
+            {/* Mobile menu dropdown */}
             {open && (
-                <div className="md:hidden border-t border-gray-100 bg-white px-4 py-3 space-y-1">
-                    {NAV.map(({ path, label }) => {
-                        const active = pathname === path;
-                        return (
-                            <Link key={path} href={path}
-                                onClick={() => setOpen(false)}
-                                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium no-underline transition-colors ${
-                                    active ? 'bg-red-50 text-[#C1121F]' : 'text-gray-600 hover:bg-gray-50'
-                                }`}>
-                                <span>{label}</span>
-                                {active && <span className="w-2 h-2 rounded-full bg-[#C1121F]" />}
-                            </Link>
-                        );
-                    })}
-                    <Link href="/register" onClick={() => setOpen(false)}
-                        className="flex items-center justify-center gap-2 mt-2 px-4 py-3 rounded-xl text-sm font-bold text-white no-underline"
-                        style={{ background: 'linear-gradient(135deg,#C1121F,#E63946)' }}>
-                        + Register Student
-                    </Link>
+                <div className="lg:hidden border-t border-slate-200 bg-white px-4 py-4 space-y-3 shadow-xl">
+                    <div>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-3">Student Zone</p>
+                        <div className="space-y-1">
+                            {STUDENT_NAV.map(({ path, label, icon }) => {
+                                const active = pathname === path;
+                                return (
+                                    <Link key={path} href={path}
+                                        onClick={() => setOpen(false)}
+                                        className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all no-underline ${
+                                            active ? 'bg-blue-50 text-blue-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        }`}>
+                                        <span>{icon}</span>
+                                        <span>{label}</span>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-slate-100">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 px-3">Staff & Admin Zone</p>
+                        <div className="space-y-1">
+                            {ADMIN_NAV.map(({ path, label, icon }) => {
+                                const active = pathname === path;
+                                return (
+                                    <Link key={path} href={path}
+                                        onClick={() => setOpen(false)}
+                                        className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all no-underline ${
+                                            active ? 'bg-emerald-50 text-emerald-700 font-bold' : 'text-slate-700 hover:bg-slate-50'
+                                        }`}>
+                                        <div className="flex items-center gap-2.5">
+                                            <span>{icon}</span>
+                                            <span>{label}</span>
+                                        </div>
+                                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-600 font-bold">Protected</span>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
             )}
         </nav>
