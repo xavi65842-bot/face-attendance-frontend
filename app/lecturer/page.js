@@ -496,10 +496,10 @@ function SessionPanel({ lecturer, onLogout }) {
                 </div>
             </div>
 
-            {/* Navbar */}
+            {/* Navbar for Logged In Lecturer */}
             <nav className="sticky top-0 z-50 w-full bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 shadow-lg shadow-black/40">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-shrink-0">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between gap-4">
+                    <Link href="/" className="flex items-center gap-3 no-underline flex-shrink-0">
                         <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center text-white font-black text-sm sm:text-base shadow-lg shadow-blue-600/30 bg-gradient-to-tr from-blue-700 via-blue-600 to-emerald-500">
                             SH
                         </div>
@@ -507,37 +507,33 @@ function SessionPanel({ lecturer, onLogout }) {
                             <div className="flex items-center gap-2">
                                 <span className="font-black text-white text-base sm:text-lg">Salvation Heritage</span>
                                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                    Faculty
+                                    Faculty Active
                                 </span>
                             </div>
                             <span className="hidden md:block text-slate-400 text-xs">Instructor Session Terminal</span>
                         </div>
-                    </div>
+                    </Link>
 
-                    <div className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                    {/* Dedicated Faculty Navigation (No admin links) */}
+                    <div className="hidden sm:flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800">
+                        <span className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-emerald-600 shadow-md shadow-blue-600/30">
+                            👨🏾‍🏫 Class Session Portal
+                        </span>
                         <Link href="/" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                            Kiosk
-                        </Link>
-                        <Link href="/dashboard" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                            Dashboard
-                        </Link>
-                        <Link href="/students" className="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-300 hover:text-white hover:bg-slate-800 transition-all no-underline">
-                            Students
-                        </Link>
-                        <Link href="/lecturer" className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-md shadow-blue-600/30 no-underline">
-                            Faculty
+                            📸 View Kiosk
                         </Link>
                     </div>
 
                     {/* Lecturer identity + logout */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-shrink-0">
                         <div className="hidden sm:block text-right">
                             <p className="text-xs font-bold text-white">{lecturer.full_name}</p>
-                            <p className="text-[10px] text-emerald-400 font-mono">{lecturer.lecturer_id}</p>
+                            <p className="text-[10px] text-emerald-400 font-mono">{lecturer.department} • {lecturer.lecturer_id}</p>
                         </div>
                         <button onClick={onLogout}
-                            className="px-3.5 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all">
-                            Sign Out
+                            className="px-4 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex items-center gap-1.5 shadow-sm active:scale-95">
+                            <span>🚪</span>
+                            <span>Sign Out</span>
                         </button>
                     </div>
                 </div>
@@ -805,6 +801,18 @@ function SessionPanel({ lecturer, onLogout }) {
                     <button onClick={onLogout} className="text-rose-400 hover:underline">Sign Out</button>
                 </div>
             </footer>
+
+            {/* Mobile Faculty Bottom Bar */}
+            <div className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 py-2.5 px-4 flex items-center justify-between shadow-2xl shadow-black">
+                <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-bold text-white truncate max-w-[170px]">{lecturer.full_name}</span>
+                </div>
+                <button onClick={onLogout}
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30">
+                    🚪 Sign Out
+                </button>
+            </div>
         </div>
     );
 }
