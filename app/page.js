@@ -45,7 +45,10 @@ export default function HomePage() {
     const [showDebug, setShowDebug] = useState(false);
     const [showDebugConsole, setShowDebugConsole] = useState(false);
 
-    // Faculty Modal State on Home Page
+    // Active Logged-in Faculty state
+    const [activeLecturer, setActiveLecturer] = useState(null);
+
+    // Faculty Modal State on Home Page (for when NOT logged in)
     const [showFacultyModal, setShowFacultyModal] = useState(false);
     const [facultyUser, setFacultyUser] = useState('');
     const [facultyPass, setFacultyPass] = useState('');
@@ -60,6 +63,14 @@ export default function HomePage() {
 
     useEffect(() => {
         isMounted.current = true;
+        // Check if lecturer is already authenticated in localStorage
+        try {
+            const saved = localStorage.getItem('fa_lecturer');
+            if (saved) {
+                setActiveLecturer(JSON.parse(saved));
+            }
+        } catch { /* ignore */ }
+
         return () => { isMounted.current = false; };
     }, []);
 
@@ -141,7 +152,30 @@ export default function HomePage() {
         }
     }, [fetchStats]);
 
-    // Handle Faculty Login from Home Page
+    // Smart Faculty Portal Action:
+    // If ALREADY logged in -> directly navigates to /lecturer without asking for credentials
+    // If NOT logged in -> opens the login modal
+    const handleFacultyAction = () => {
+        try {
+            const saved = localStorage.getItem('fa_lecturer');
+            if (saved) {
+                router.push('/lecturer');
+                return;
+            }
+        } catch { /* ignore */ }
+        setShowFacultyModal(true);
+    };
+
+    // Logout from Home Page
+    const handleFacultySignOut = (e) => {
+        if (e) e.stopPropagation();
+        localStorage.removeItem('fa_lecturer');
+        sessionStorage.removeItem('fa_session');
+        setActiveLecturer(null);
+        toast.success('Signed out from Faculty Terminal.', { icon: '👋', duration: 3000 });
+    };
+
+    // Handle Faculty Login submission
     const handleFacultyLogin = async (e) => {
         if (e) e.preventDefault();
         setFacultyError('');
@@ -153,6 +187,7 @@ export default function HomePage() {
             const res = await loginLecturer(facultyUser.trim(), facultyPass.trim());
             if (res.success && res.lecturer) {
                 localStorage.setItem('fa_lecturer', JSON.stringify(res.lecturer));
+                setActiveLecturer(res.lecturer);
                 toast.success(res.message || `Welcome, ${res.lecturer.full_name}!`, { icon: '👨🏾‍🏫', duration: 3000 });
                 setShowFacultyModal(false);
                 router.push('/lecturer');
@@ -198,11 +233,27 @@ export default function HomePage() {
                     <span className="text-slate-400 hidden sm:inline">•</span>
                     <span className="text-emerald-300 font-semibold">Contactless Face Attendance Active</span>
                 </div>
-                <button onClick={() => setShowFacultyModal(true)}
-                    className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black text-white bg-blue-600/60 hover:bg-blue-600 border border-blue-400/40 shadow-sm transition-all">
-                    <span>👨🏾‍🏫</span>
-                    <span>Faculty Portal Login</span>
-                </button>
+
+                {activeLecturer ? (
+                    <div className="flex items-center gap-2">
+                        <button onClick={handleFacultyAction}
+                            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold text-emerald-300 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 transition-all">
+                            <span>👨🏾‍🏫</span>
+                            <span>{activeLecturer.full_name} (Portal Active) →</span>
+                        </button>
+                        <button onClick={handleFacultySignOut}
+                            title="Sign Out of Faculty Portal"
+                            className="text-[10px] text-rose-300 hover:text-rose-200 px-2 py-0.5 rounded bg-rose-500/15 border border-rose-500/30">
+                            Sign Out
+                        </button>
+                    </div>
+                ) : (
+                    <button onClick={handleFacultyAction}
+                        className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black text-white bg-blue-600/60 hover:bg-blue-600 border border-blue-400/40 shadow-sm transition-all">
+                        <span>👨🏾‍🏫</span>
+                        <span>Faculty Portal Login</span>
+                    </button>
+                )}
             </div>
 
             {/* ── Main Navbar ── */}
@@ -246,11 +297,19 @@ export default function HomePage() {
 
                     {/* Right: Faculty Button + Mobile Menu Toggle */}
                     <div className="flex items-center gap-2">
-                        <button onClick={() => setShowFacultyModal(true)}
-                            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all">
-                            <span>👨🏾‍🏫</span>
-                            <span>Faculty Sign In</span>
-                        </button>
+                        {activeLecturer ? (
+                            <button onClick={handleFacultyAction}
+                                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-md shadow-emerald-600/30 active:scale-95 transition-all">
+                                <span>👨🏾‍🏫</span>
+                                <span>My Terminal ({activeLecturer.full_name.split(' ')[0]})</span>
+                            </button>
+                        ) : (
+                            <button onClick={handleFacultyAction}
+                                className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all">
+                                <span>👨🏾‍🏫</span>
+                                <span>Faculty Sign In</span>
+                            </button>
+                        )}
 
                         <button onClick={() => setShowDebugConsole(true)}
                             title="Open Diagnostic Console"
@@ -307,13 +366,27 @@ export default function HomePage() {
                             </Link>
                         </div>
 
-                        {/* Mobile Faculty Login Trigger */}
+                        {/* Mobile Faculty Section */}
                         <div className="pt-2 border-t border-slate-800">
-                            <button onClick={() => { setMobileMenuOpen(false); setShowFacultyModal(true); }}
-                                className="w-full py-3.5 rounded-2xl font-black text-sm text-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 shadow-md shadow-blue-600/30 flex items-center justify-center gap-2">
-                                <span>👨🏾‍🏫</span>
-                                <span>Faculty / Lecturer Login</span>
-                            </button>
+                            {activeLecturer ? (
+                                <div className="space-y-2">
+                                    <button onClick={() => { setMobileMenuOpen(false); router.push('/lecturer'); }}
+                                        className="w-full py-3.5 rounded-2xl font-black text-sm text-center text-white bg-gradient-to-r from-emerald-600 to-teal-600 shadow-md flex items-center justify-center gap-2">
+                                        <span>👨🏾‍🏫</span>
+                                        <span>Resume Portal ({activeLecturer.full_name})</span>
+                                    </button>
+                                    <button onClick={() => { setMobileMenuOpen(false); handleFacultySignOut(); }}
+                                        className="w-full py-2.5 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 border border-rose-500/30">
+                                        Sign Out of Faculty Portal
+                                    </button>
+                                </div>
+                            ) : (
+                                <button onClick={() => { setMobileMenuOpen(false); handleFacultyAction(); }}
+                                    className="w-full py-3.5 rounded-2xl font-black text-sm text-center text-white bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 shadow-md shadow-blue-600/30 flex items-center justify-center gap-2">
+                                    <span>👨🏾‍🏫</span>
+                                    <span>Faculty / Lecturer Login</span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 )}
@@ -356,14 +429,37 @@ export default function HomePage() {
                                 <div className="flex items-center gap-3">
                                     <span className="text-2xl">👨🏾‍🏫</span>
                                     <div>
-                                        <p className="text-xs sm:text-sm font-bold text-white">Faculty & Lecturer Portal</p>
-                                        <p className="text-[11px] text-emerald-300">Open active class session & start roll call</p>
+                                        {activeLecturer ? (
+                                            <>
+                                                <p className="text-xs sm:text-sm font-bold text-emerald-400">
+                                                    Welcome back, {activeLecturer.full_name}
+                                                </p>
+                                                <p className="text-[11px] text-slate-300">
+                                                    {activeLecturer.department} • Active Faculty Session
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p className="text-xs sm:text-sm font-bold text-white">Faculty & Lecturer Portal</p>
+                                                <p className="text-[11px] text-emerald-300">Open active class session & start roll call</p>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
-                                <button onClick={() => setShowFacultyModal(true)}
-                                    className="px-4 py-2 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all flex-shrink-0">
-                                    Open Faculty Terminal →
-                                </button>
+
+                                <div className="flex items-center gap-2 w-full sm:w-auto">
+                                    <button onClick={handleFacultyAction}
+                                        className="flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-black text-white bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-500 hover:to-emerald-500 shadow-md shadow-blue-600/30 active:scale-95 transition-all flex-shrink-0">
+                                        {activeLecturer ? 'Enter Faculty Terminal →' : 'Open Faculty Terminal →'}
+                                    </button>
+                                    {activeLecturer && (
+                                        <button onClick={handleFacultySignOut}
+                                            title="Sign Out"
+                                            className="px-3 py-2 rounded-xl text-xs font-bold text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all flex-shrink-0">
+                                            Sign Out
+                                        </button>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Live Clock Card */}
@@ -526,8 +622,8 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {/* ── Faculty / Lecturer Login Modal on Home Page ── */}
-            {showFacultyModal && (
+            {/* ── Faculty / Lecturer Login Modal on Home Page (Only when signed out) ── */}
+            {showFacultyModal && !activeLecturer && (
                 <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
                     <div className="bg-slate-900 border border-blue-500/30 rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
                         {/* Header */}
@@ -644,9 +740,18 @@ export default function HomePage() {
                         </div>
                         <span className="font-semibold text-slate-300">Salvation Heritage Biometric Attendance</span>
                     </div>
-                    <button onClick={() => setShowFacultyModal(true)} className="text-blue-400 hover:underline">
-                        Faculty Login
-                    </button>
+                    {activeLecturer ? (
+                        <div className="flex items-center gap-3">
+                            <span className="text-emerald-400 font-medium">Logged in: {activeLecturer.full_name}</span>
+                            <button onClick={handleFacultySignOut} className="text-rose-400 hover:underline">
+                                Sign Out
+                            </button>
+                        </div>
+                    ) : (
+                        <button onClick={handleFacultyAction} className="text-blue-400 hover:underline">
+                            Faculty Login
+                        </button>
+                    )}
                 </div>
             </footer>
         </div>
